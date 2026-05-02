@@ -12,15 +12,15 @@ export function SiteHeader() {
     }
 
     return (
-        <section className="w-full bg-white py-6 border-b border-gray-100">
+        <section className="w-full bg-white py-3 sm:py-5 md:py-6 border-b border-gray-100">
             <div className="portal-container flex flex-col items-center justify-center text-center">
-                <Link href="/" className="block w-full max-w-[600px]">
-                    <div className="relative h-[80px] sm:h-[120px] md:h-[160px] w-full overflow-hidden">
+                <Link href="/" className="block w-full max-w-[500px]">
+                    <div className="relative h-[60px] sm:h-[90px] md:h-[130px] w-full overflow-hidden">
                         <Image
                             src="/images/logoslogan.png"
                             alt="Portal do Sudoeste"
                             fill
-                            sizes="(max-width: 768px) 100vw, 600px"
+                            sizes="(max-width: 640px) 90vw, 500px"
                             className="object-contain transition-transform duration-500 ease-out hover:scale-105"
                             priority
                         />

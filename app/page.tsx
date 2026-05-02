@@ -31,11 +31,11 @@ export default function Home() {
 
   return (
     <div className="flex flex-col w-full bg-[#fafafa]">
-      <div className="portal-container py-10">
+      <div className="portal-container py-4 sm:py-6 lg:py-10">
         {/* Hero Section */}
         <HeroCarousel />
 
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 mt-10">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 lg:gap-10 mt-5 lg:mt-10">
           {/* Main Content */}
           <div className="lg:col-span-8 space-y-14">
 
@@ -96,7 +96,7 @@ export default function Home() {
 
           {/* Sidebar */}
           <div className="lg:col-span-4">
-            <div className="sticky top-16">
+            <div className="lg:sticky lg:top-16">
               <Sidebar />
             </div>
           </div>

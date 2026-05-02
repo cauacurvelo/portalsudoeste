@@ -1,12 +1,12 @@
+import Link from "next/link"
+import Image from "next/image"
 import { getMostReadArticles, getLatestArticles } from "@/lib/data/articles"
 import { ArticleCard } from "@/components/news/ArticleCard"
-import { Button } from "@/components/ui/button"
-import Link from "next/link"
-import { SITE_CONFIG } from "@/lib/constants"
 import { NewsletterForm } from "@/components/forms/NewsletterForm"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { AdSpace } from "@/components/ui/AdSpace"
 import { Instagram, Youtube, Facebook } from "lucide-react"
+import { SITE_CONFIG } from "@/lib/constants"
 
 export function Sidebar() {
     const mostRead = getMostReadArticles(5)
@@ -16,17 +16,17 @@ export function Sidebar() {
         <aside className="w-full space-y-8">
 
             {/* Newsletter */}
-            <div className="bg-brand-blue-primary p-6 rounded-sm">
+            <div className="bg-brand-blue-primary p-5 rounded-sm">
                 <p className="text-[9px] font-black uppercase tracking-[0.3em] text-brand-red mb-1">Fique por Dentro</p>
-                <h3 className="text-lg font-serif font-black text-white mb-1">Receba no E-mail</h3>
-                <p className="text-xs text-white/50 mb-5 font-medium leading-relaxed">As notícias mais importantes do Sudoeste Baiano direto para você.</p>
+                <h3 className="text-base font-serif font-black text-white mb-1">Receba no E-mail</h3>
+                <p className="text-xs text-white/50 mb-4 font-medium leading-relaxed">As notícias mais importantes do Sudoeste Baiano direto para você.</p>
                 <NewsletterForm />
             </div>
 
             {/* Most Read / Latest Tabs */}
             <div>
                 <Tabs defaultValue="maislidas" className="w-full">
-                    <div className="flex items-end justify-between mb-5 pb-3 border-b-2 border-gray-100">
+                    <div className="flex items-end justify-between mb-4 pb-3 border-b-2 border-gray-100">
                         <p className="text-[10px] font-black uppercase tracking-[0.3em] text-brand-red">Ranking</p>
                         <TabsList className="bg-transparent rounded-none h-auto p-0 gap-4">
                             <TabsTrigger
@@ -47,10 +47,10 @@ export function Sidebar() {
                     <TabsContent value="maislidas" className="space-y-0 mt-0">
                         {mostRead.map((article, index) => (
                             <div key={article.id} className="flex items-start gap-3">
-                                <span className="text-3xl font-black text-gray-100 w-8 shrink-0 leading-none pt-3 select-none">
+                                <span className="text-2xl font-black text-gray-100 w-7 shrink-0 leading-none pt-3 select-none">
                                     {String(index + 1).padStart(2, '0')}
                                 </span>
-                                <div className="flex-1">
+                                <div className="flex-1 min-w-0">
                                     <ArticleCard article={article} variant="compact" />
                                 </div>
                             </div>
@@ -59,10 +59,10 @@ export function Sidebar() {
                     <TabsContent value="recentes" className="space-y-0 mt-0">
                         {latestNews.map((article, index) => (
                             <div key={`recent-${article.id}`} className="flex items-start gap-3">
-                                <span className="text-3xl font-black text-gray-100 w-8 shrink-0 leading-none pt-3 select-none">
+                                <span className="text-2xl font-black text-gray-100 w-7 shrink-0 leading-none pt-3 select-none">
                                     {String(index + 1).padStart(2, '0')}
                                 </span>
-                                <div className="flex-1">
+                                <div className="flex-1 min-w-0">
                                     <ArticleCard article={article} variant="compact" />
                                 </div>
                             </div>

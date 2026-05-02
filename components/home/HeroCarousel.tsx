@@ -5,7 +5,6 @@ import Image from "next/image"
 import Link from "next/link"
 import Autoplay from "embla-carousel-autoplay"
 import useEmblaCarousel from "embla-carousel-react"
-import { motion } from "framer-motion"
 import { ChevronLeft, ChevronRight } from "lucide-react"
 import { ARTICLES } from "@/lib/data/articles"
 import { Badge } from "@/components/ui/badge"
@@ -33,7 +32,7 @@ export function HeroCarousel() {
     return (
         <section className="w-full mb-2">
             <div
-                className="relative w-full overflow-hidden rounded-xl shadow-2xl"
+                className="relative w-full overflow-hidden rounded-lg shadow-2xl"
                 onMouseEnter={() => autoplay.current.stop()}
                 onMouseLeave={() => autoplay.current.reset()}
             >
@@ -41,50 +40,48 @@ export function HeroCarousel() {
                     <div className="flex">
                         {featured.map((article, index) => (
                             <div key={article.id} className="min-w-0 shrink-0 grow-0 basis-full">
-                                <Link href={`/noticia/${article.slug}`} className="relative block group" style={{ aspectRatio: '21/9' }}>
+                                <Link
+                                    href={`/noticia/${article.slug}`}
+                                    className="relative block group aspect-[4/3] sm:aspect-[16/9] lg:aspect-[21/9]"
+                                >
                                     <Image
                                         src={article.image}
                                         alt={article.title}
                                         fill
-                                        className="object-cover transition-transform duration-1000 group-hover:scale-105"
+                                        className="object-cover"
                                         priority={index === 0}
+                                        sizes="100vw"
                                     />
-                                    {/* Layered gradients for depth */}
-                                    <div className="absolute inset-0 bg-gradient-to-r from-brand-blue-primary/85 via-brand-blue-primary/25 to-transparent" />
-                                    <div className="absolute inset-0 bg-gradient-to-t from-brand-blue-primary/95 via-transparent to-transparent" />
+                                    {/* Gradient stronger on mobile for readability */}
+                                    <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/40 to-transparent" />
+                                    <div className="absolute inset-0 hidden sm:block bg-gradient-to-r from-brand-blue-primary/70 via-transparent to-transparent" />
 
-                                    {/* Content */}
-                                    <div className="absolute inset-0 flex flex-col justify-end p-8 md:p-16 lg:p-20">
-                                        <motion.div
-                                            initial={{ opacity: 0, y: 24 }}
-                                            animate={{ opacity: 1, y: 0 }}
-                                            transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
-                                            className="max-w-3xl"
-                                        >
-                                            <div className="flex items-center gap-3 mb-5">
-                                                <Badge className="bg-brand-red text-white border-none px-4 py-1.5 font-black uppercase tracking-[0.2em] text-[9px] rounded-full shadow-lg">
+                                    {/* Content — mobile-first layout */}
+                                    <div className="absolute inset-0 flex flex-col justify-end p-4 sm:p-8 md:p-12 lg:p-16">
+                                        <div className="max-w-2xl">
+                                            <div className="flex items-center gap-2 mb-3">
+                                                <span className="bg-brand-red text-white text-[8px] sm:text-[9px] font-black uppercase tracking-[0.2em] rounded-full px-3 py-1">
                                                     {article.category}
-                                                </Badge>
+                                                </span>
                                                 {article.city && (
-                                                    <>
-                                                        <span className="w-1 h-1 bg-white/30 rounded-full" />
-                                                        <span className="text-[10px] font-black uppercase tracking-[0.15em] text-white/70">{article.city}</span>
-                                                    </>
+                                                    <span className="text-[9px] font-bold uppercase tracking-wider text-white/60 hidden sm:block">
+                                                        {article.city}
+                                                    </span>
                                                 )}
                                             </div>
 
-                                            <h2 className="text-2xl md:text-4xl lg:text-5xl font-serif font-black leading-[1.1] mb-5 text-white drop-shadow-md group-hover:text-brand-red/90 transition-colors duration-500">
+                                            <h2 className="text-lg sm:text-2xl md:text-3xl lg:text-4xl font-serif font-black leading-[1.15] text-white mb-3 drop-shadow-lg line-clamp-3 sm:line-clamp-none">
                                                 {article.title}
                                             </h2>
 
-                                            <p className="hidden md:block text-white/75 text-base max-w-xl line-clamp-2 font-medium leading-relaxed mb-6 pl-4 border-l-2 border-brand-red/70">
+                                            <p className="hidden sm:block text-white/70 text-sm max-w-lg line-clamp-2 mb-3 pl-3 border-l-2 border-brand-red/60">
                                                 {article.summary}
                                             </p>
 
-                                            <p className="text-[10px] text-white/40 font-black uppercase tracking-[0.3em]">
-                                                {format(new Date(article.date), "dd MMMM, yyyy", { locale: ptBR })}
+                                            <p className="text-[9px] text-white/40 font-bold uppercase tracking-widest hidden sm:block">
+                                                {format(new Date(article.date), "dd 'de' MMMM, yyyy", { locale: ptBR })}
                                             </p>
-                                        </motion.div>
+                                        </div>
                                     </div>
                                 </Link>
                             </div>
@@ -92,27 +89,27 @@ export function HeroCarousel() {
                     </div>
                 </div>
 
-                {/* Custom Controls */}
-                <div className="absolute bottom-6 right-8 md:right-16 flex items-center gap-3 z-20">
+                {/* Controls — always visible on mobile, bottom-right on desktop */}
+                <div className="absolute bottom-3 right-3 sm:bottom-5 sm:right-6 flex items-center gap-2 z-20">
                     {/* Dots */}
-                    <div className="flex items-center gap-1.5 mr-3">
+                    <div className="flex items-center gap-1.5 mr-2">
                         {featured.map((_, i) => (
                             <button
                                 key={i}
                                 onClick={() => emblaApi?.scrollTo(i)}
-                                className={`rounded-full transition-all duration-300 ${i === selectedIndex ? 'w-6 h-1.5 bg-brand-red' : 'w-1.5 h-1.5 bg-white/30 hover:bg-white/60'}`}
+                                className={`rounded-full transition-all duration-300 ${i === selectedIndex ? 'w-5 h-1.5 bg-brand-red' : 'w-1.5 h-1.5 bg-white/40'}`}
                             />
                         ))}
                     </div>
                     <button
                         onClick={scrollPrev}
-                        className="w-9 h-9 flex items-center justify-center bg-white/10 hover:bg-brand-red border border-white/15 text-white transition-all duration-300 backdrop-blur-sm rounded-full"
+                        className="w-8 h-8 sm:w-9 sm:h-9 flex items-center justify-center bg-black/30 hover:bg-brand-red border border-white/20 text-white transition-all backdrop-blur-sm rounded-full"
                     >
                         <ChevronLeft className="w-4 h-4" />
                     </button>
                     <button
                         onClick={scrollNext}
-                        className="w-9 h-9 flex items-center justify-center bg-white/10 hover:bg-brand-red border border-white/15 text-white transition-all duration-300 backdrop-blur-sm rounded-full"
+                        className="w-8 h-8 sm:w-9 sm:h-9 flex items-center justify-center bg-black/30 hover:bg-brand-red border border-white/20 text-white transition-all backdrop-blur-sm rounded-full"
                     >
                         <ChevronRight className="w-4 h-4" />
                     </button>
