@@ -17,7 +17,7 @@ export function SiteHeader() {
                 <Link href="/" className="block w-full max-w-[500px]">
                     <div className="relative h-[60px] sm:h-[90px] md:h-[130px] w-full overflow-hidden">
                         <Image
-                            src="/images/logoslogan.png"
+                            src="/images/logo.png"
                             alt="Portal do Sudoeste"
                             fill
                             sizes="(max-width: 640px) 90vw, 500px"
