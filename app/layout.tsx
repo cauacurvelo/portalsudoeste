@@ -34,6 +34,10 @@ export const metadata: Metadata = {
   title: "Portal do Sudoeste | Notícias de Poções e Região",
   description: "O maior portal de notícias do sudoeste baiano. Informação com credibilidade sobre Poções, Jequié, Vitória da Conquista e muito mais.",
   keywords: ["notícias", "sudoeste baiano", "poções", "jequié", "vitória da conquista", "portal do sudoeste"],
+  icons: {
+    icon: "/images/logo.png",
+    apple: "/images/logo.png",
+  },
 };
 
 export default function RootLayout({
