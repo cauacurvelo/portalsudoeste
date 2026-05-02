@@ -7,7 +7,7 @@ import { SiteHeader } from "@/components/layout/SiteHeader";
 import { MainNav } from "@/components/layout/MainNav";
 import { NewsTicker } from "@/components/layout/NewsTicker";
 import { SiteFooter } from "@/components/layout/SiteFooter";
-import { WhatsAppFAB } from "@/components/layout/WhatsAppFAB";
+
 
 const sourceSans = Source_Sans_3({
   variable: "--font-sans",
@@ -59,7 +59,7 @@ export default function RootLayout({
           <SiteHeader />
           <main className="flex-grow">{children}</main>
           <SiteFooter />
-          <WhatsAppFAB />
+
         </ThemeProvider>
       </body>
     </html>
