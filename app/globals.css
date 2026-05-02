@@ -1,0 +1,162 @@
+@import "tailwindcss";
+
+:root {
+  --background: #ffffff;
+  --foreground: #171717;
+
+  /* Portal do Sudoeste Brand Colors */
+  --brand-blue-primary: #0F1442;
+  --brand-blue-secondary: #212C7D;
+  --brand-red: #D71920;
+  --brand-gray-light: #F5F5F5;
+  --brand-dark: #111111;
+
+  --card: #ffffff;
+  --card-foreground: #171717;
+  --popover: #ffffff;
+  --popover-foreground: #171717;
+  --primary: #0F1442;
+  --primary-foreground: #ffffff;
+  --secondary: #F5F5F5;
+  --secondary-foreground: #0F1442;
+  --muted: #F5F5F5;
+  --muted-foreground: #737373;
+  --accent: #F5F5F5;
+  --accent-foreground: #0F1442;
+  --destructive: #ef4444;
+  --destructive-foreground: #fafafa;
+  --border: #e5e5e5;
+  --input: #e5e5e5;
+  --ring: #0F1442;
+  --radius: 0.5rem;
+}
+
+.dark {
+  --background: #0a0a0a;
+  --foreground: #ededed;
+
+  --card: #0a0a0a;
+  --card-foreground: #ededed;
+  --popover: #0a0a0a;
+  --popover-foreground: #ededed;
+  --primary: #212C7D;
+  --primary-foreground: #ffffff;
+  --secondary: #171717;
+  --secondary-foreground: #ffffff;
+  --muted: #171717;
+  --muted-foreground: #a3a3a3;
+  --accent: #171717;
+  --accent-foreground: #ffffff;
+  --border: #262626;
+  --input: #262626;
+  --ring: #212C7D;
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+
+  --color-brand-blue-primary: var(--brand-blue-primary);
+  --color-brand-blue-secondary: var(--brand-blue-secondary);
+  --color-brand-red: var(--brand-red);
+  --color-brand-gray-light: var(--brand-gray-light);
+  --color-brand-dark: var(--brand-dark);
+
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-destructive: var(--destructive);
+  --color-destructive-foreground: var(--destructive-foreground);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+
+  --radius-lg: var(--radius);
+  --radius-md: calc(var(--radius) - 2px);
+  --radius-sm: calc(var(--radius) - 4px);
+
+  --font-sans: 'Source Sans 3';
+  --font-serif: 'Source Serif 4';
+  --font-display: 'Playfair Display';
+}
+
+@layer base {
+  * {
+    border-color: var(--border);
+  }
+
+  body {
+    background-color: var(--background);
+    color: var(--foreground);
+    font-feature-settings: "rlig" 1, "calt" 1;
+    scroll-behavior: smooth;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-rendering: optimizeLegibility;
+  }
+
+  a, button {
+    transition-property: color, background-color, border-color, opacity, transform;
+    transition-timing-function: cubic-bezier(0.22, 1, 0.36, 1);
+    transition-duration: 200ms;
+  }
+
+  ::selection {
+    background-color: var(--brand-red);
+    color: white;
+  }
+
+  /* Custom Scrollbar */
+  ::-webkit-scrollbar {
+    width: 6px;
+  }
+  ::-webkit-scrollbar-track {
+    background: transparent;
+  }
+  ::-webkit-scrollbar-thumb {
+    background: #d4d4d4;
+    border-radius: 10px;
+  }
+  ::-webkit-scrollbar-thumb:hover {
+    background: var(--brand-blue-primary);
+  }
+}
+
+@keyframes scroll-text {
+  0% {
+    transform: translateX(0);
+  }
+  100% {
+    transform: translateX(-50%);
+  }
+}
+
+.animate-scroll-text {
+  animation: scroll-text 40s linear infinite;
+}
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(16px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.article-card-animate {
+  animation: fadeInUp 0.5s ease-out both;
+}
+
+@layer components {
+  .portal-container {
+    @apply container mx-auto px-6 md:px-12 lg:px-20 max-w-[1400px];
+  }
+}
