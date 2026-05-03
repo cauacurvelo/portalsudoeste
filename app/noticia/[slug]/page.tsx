@@ -1,6 +1,7 @@
 import type { Metadata } from "next"
 import { getArticleBySlug } from "@/lib/data/articles-db"
 import { ArticleDetail } from "@/components/news/ArticleDetail"
+import { ViewTracker } from "@/components/news/ViewTracker"
 import { notFound } from "next/navigation"
 import { SITE_CONFIG } from "@/lib/constants"
 
@@ -60,6 +61,7 @@ export default async function ArticlePage({ params }: PageProps) {
 
     return (
         <div className="bg-white">
+            <ViewTracker articleId={article.id} />
             <script
                 type="application/ld+json"
                 dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}

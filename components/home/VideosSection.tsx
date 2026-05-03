@@ -48,7 +48,7 @@ export async function VideosSection() {
                                 {featured.title}
                             </h3>
                             <p className="text-[10px] font-bold uppercase tracking-widest text-white/30 mt-2 flex items-center gap-1.5">
-                                <Eye className="w-3 h-3" /> {featured.views || 0} visualizações
+                                <Eye className="w-3 h-3" /> {featured.views ? `${featured.views} visualizações` : 'Novo vídeo'}
                             </p>
                         </Link>
                     </div>
@@ -71,7 +71,7 @@ export async function VideosSection() {
                                         {video.title}
                                     </h4>
                                     <span className="text-[9px] font-black uppercase tracking-wider text-white/25 flex items-center gap-1">
-                                        <Eye className="w-2.5 h-2.5" /> {video.views || 0} views
+                                        <Eye className="w-2.5 h-2.5" /> {video.views ? `${video.views} views` : 'Novo'}
                                     </span>
                                 </div>
                             </Link>
