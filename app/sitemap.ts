@@ -1,9 +1,10 @@
 import type { MetadataRoute } from "next"
-import { ARTICLES } from "@/lib/data/articles"
+import { getLatestArticles } from "@/lib/data/articles-db"
 import { SITE_CONFIG } from "@/lib/constants"
 
-export default function sitemap(): MetadataRoute.Sitemap {
+export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     const baseUrl = SITE_CONFIG.url
+    const articles = await getLatestArticles(1000)
 
     const staticPages: MetadataRoute.Sitemap = [
         { url: baseUrl, lastModified: new Date(), changeFrequency: "hourly", priority: 1 },
@@ -14,7 +15,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
         { url: `${baseUrl}/privacidade`, lastModified: new Date(), changeFrequency: "yearly", priority: 0.3 },
     ]
 
-    const articlePages: MetadataRoute.Sitemap = ARTICLES.map((article) => ({
+    const articlePages: MetadataRoute.Sitemap = articles.map((article) => ({
         url: `${baseUrl}/noticia/${article.slug}`,
         lastModified: new Date(article.date),
         changeFrequency: "weekly" as const,

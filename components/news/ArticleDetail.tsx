@@ -3,7 +3,7 @@ import { ptBR } from "date-fns/locale"
 import Image from "next/image"
 import Link from "next/link"
 import { Facebook, Twitter, MessageCircle, Calendar, Clock, User, Share2, ArrowLeft } from "lucide-react"
-import { Article, getRelatedArticles } from "@/lib/data/articles"
+import { Article, getRelatedArticles } from "@/lib/data/articles-db"
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
 import { slugify } from "@/lib/utils"
@@ -12,7 +12,8 @@ interface ArticleDetailProps {
     article: Article
 }
 
-export function ArticleDetail({ article }: ArticleDetailProps) {
+export async function ArticleDetail({ article }: ArticleDetailProps) {
+    const relatedArticles = await getRelatedArticles(article)
     const articleUrl = `https://www.portaldosudoeste.com.br/noticia/${article.slug}`
     const shareText = encodeURIComponent(article.title)
     const shareUrl = encodeURIComponent(articleUrl)
@@ -91,16 +92,10 @@ export function ArticleDetail({ article }: ArticleDetailProps) {
             {/* Content */}
             <div className="flex flex-col lg:flex-row gap-12">
                 <div className="lg:flex-1">
-                    <div className="prose prose-lg max-w-none text-gray-800 font-medium leading-relaxed space-y-6">
-                        {article.content.split('\n\n').map((paragraph, i) => (
-                            <p key={i} className={i === 0 ? "first-letter:text-7xl first-letter:font-black first-letter:text-brand-blue-primary first-letter:mr-3 first-letter:float-left first-letter:font-serif" : ""}>
-                                {paragraph}
-                            </p>
-                        ))}
-                        <blockquote className="border-l-8 border-brand-red bg-brand-gray-light p-8 italic text-2xl font-serif text-brand-blue-primary">
-                            "O Portal do Sudoeste continua acompanhando o desdobramento desta notícia e trará novas informações a qualquer momento."
-                        </blockquote>
-                    </div>
+                    <div 
+                        className="prose prose-lg max-w-none text-gray-800 font-medium leading-relaxed space-y-6 wp-content"
+                        dangerouslySetInnerHTML={{ __html: article.content }}
+                    />
 
                     {/* Tags */}
                     <div className="flex flex-wrap gap-2 mt-16 pt-8 border-t border-gray-100">
@@ -135,7 +130,7 @@ export function ArticleDetail({ article }: ArticleDetailProps) {
                         <div>
                             <h3 className="text-xs font-black uppercase text-brand-blue-primary mb-6 tracking-widest border-l-4 border-brand-red pl-3">Relacionadas</h3>
                             <div className="space-y-6">
-                                {getRelatedArticles(article).map(related => (
+                                {relatedArticles.map(related => (
                                     <Link key={related.id} href={`/noticia/${related.slug}`} className="group block cursor-pointer">
                                         <span className="text-[10px] font-black text-brand-red uppercase tracking-widest">{related.category}</span>
                                         <h4 className="font-serif font-bold text-sm leading-tight group-hover:text-brand-blue-primary transition-colors mt-1 line-clamp-3">{related.title}</h4>

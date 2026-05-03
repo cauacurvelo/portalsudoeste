@@ -1,5 +1,5 @@
 import type { Metadata } from "next"
-import { getArticlesByCity } from "@/lib/data/articles"
+import { getArticlesByCity } from "@/lib/data/articles-db"
 import { ArticleCard } from "@/components/news/ArticleCard"
 import { SITE_CONFIG } from "@/lib/constants"
 import { deslugify, slugify } from "@/lib/utils"
@@ -23,7 +23,7 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
 export default async function CityPage({ params }: PageProps) {
     const { slug } = await params
     const cityName = SITE_CONFIG.cities.find(c => slugify(c) === slug) || deslugify(slug)
-    const cityArticles = getArticlesByCity(slug)
+    const cityArticles = await getArticlesByCity(slug)
 
     return (
         <div className="container mx-auto px-4 py-12">

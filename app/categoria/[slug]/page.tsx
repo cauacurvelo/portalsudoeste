@@ -1,5 +1,5 @@
 import type { Metadata } from "next"
-import { ARTICLES, getArticlesByCategory } from "@/lib/data/articles"
+import { getArticlesByCategory } from "@/lib/data/articles-db"
 import { ArticleCard } from "@/components/news/ArticleCard"
 import { SITE_CONFIG } from "@/lib/constants"
 
@@ -22,7 +22,7 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
 
 export default async function CategoryPage({ params }: PageProps) {
     const { slug } = await params
-    const categoryArticles = getArticlesByCategory(slug)
+    const categoryArticles = await getArticlesByCategory(slug)
 
     const categoryName = slug.charAt(0).toUpperCase() + slug.slice(1);
 

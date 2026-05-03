@@ -1,5 +1,5 @@
 import type { Metadata } from "next"
-import { ARTICLES, getArticleBySlug } from "@/lib/data/articles"
+import { getArticleBySlug } from "@/lib/data/articles-db"
 import { ArticleDetail } from "@/components/news/ArticleDetail"
 import { notFound } from "next/navigation"
 import { SITE_CONFIG } from "@/lib/constants"
@@ -8,13 +8,11 @@ interface PageProps {
     params: Promise<{ slug: string }>
 }
 
-export async function generateStaticParams() {
-    return ARTICLES.map((article) => ({ slug: article.slug }))
-}
+
 
 export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
     const { slug } = await params
-    const article = getArticleBySlug(slug)
+    const article = await getArticleBySlug(slug)
 
     if (!article) return { title: "Notícia não encontrada" }
 
@@ -43,7 +41,7 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
 
 export default async function ArticlePage({ params }: PageProps) {
     const { slug } = await params
-    const article = getArticleBySlug(slug)
+    const article = await getArticleBySlug(slug)
 
     if (!article) {
         notFound()

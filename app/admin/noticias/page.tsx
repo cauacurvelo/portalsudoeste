@@ -1,12 +1,13 @@
-"use client"
-
 import Link from "next/link"
 import { format } from "date-fns"
 import { ptBR } from "date-fns/locale"
-import { ARTICLES } from "@/lib/data/articles"
+import { getLatestArticles, getTotalArticleCount } from "@/lib/data/articles-db"
 import { MessageSquare } from "lucide-react"
 
-export default function AdminNoticiasPage() {
+export default async function AdminNoticiasPage() {
+    const articles = await getLatestArticles(50)
+    const totalCount = await getTotalArticleCount()
+
     return (
         <div className="space-y-4">
             <div className="flex items-center gap-4 mb-2">
@@ -18,8 +19,8 @@ export default function AdminNoticiasPage() {
 
             {/* Status Links */}
             <ul className="flex text-[13px] text-[#2271b1] mb-2 gap-1">
-                <li><Link href="#" className="text-[#1d2327] font-semibold">Tudo <span className="text-[#646970] font-normal">({ARTICLES.length})</span></Link> | </li>
-                <li><Link href="#" className="hover:underline">Publicados <span className="text-[#646970]">({ARTICLES.length})</span></Link></li>
+                <li><Link href="#" className="text-[#1d2327] font-semibold">Tudo <span className="text-[#646970] font-normal">({totalCount})</span></Link> | </li>
+                <li><Link href="#" className="hover:underline">Publicados <span className="text-[#646970]">({totalCount})</span></Link></li>
             </ul>
 
             {/* Filter Bar */}
@@ -65,7 +66,7 @@ export default function AdminNoticiasPage() {
                         </tr>
                     </thead>
                     <tbody className="divide-y divide-[#f0f0f1]">
-                        {ARTICLES.map((article) => (
+                        {articles.map((article) => (
                             <tr key={article.id} className="hover:bg-[#f6f7f7] group">
                                 <td className="py-2 px-3 align-top"><input type="checkbox" className="border-[#8c8f94]" /></td>
                                 <td className="py-2 px-3 align-top">
@@ -113,7 +114,7 @@ export default function AdminNoticiasPage() {
                     <button className="border border-[#2271b1] text-[#2271b1] px-3 py-1 text-[13px] rounded-sm hover:bg-[#f0f0f1]">Aplicar</button>
                 </div>
                 <div className="text-[13px] text-[#3c434a]">
-                    {ARTICLES.length} itens
+                    {totalCount} itens
                 </div>
             </div>
         </div>
