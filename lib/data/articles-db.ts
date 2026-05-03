@@ -142,6 +142,18 @@ export async function getTotalArticleCount(): Promise<number> {
     return count || 0
 }
 
+export const getArticlesWithVideo = cache(async (limit = 4): Promise<Article[]> => {
+    const { data, error } = await supabase
+        .from('posts')
+        .select('*')
+        .ilike('content', '%<iframe%youtube%')
+        .order('date', { ascending: false })
+        .limit(limit)
+
+    if (error || !data) return []
+    return data.map(toArticle)
+})
+
 // ─── Incrementar visualizações ────────────────────────────────────────────────
 export async function incrementViews(id: string) {
     await supabase.rpc('increment_views', { post_id: parseInt(id) })
