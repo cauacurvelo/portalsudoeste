@@ -90,7 +90,7 @@ export const getArticlesByCategory = cache(async (category: string, limit = 12):
     const { data, error } = await supabase
         .from('posts')
         .select('*')
-        .ilike('category', `%${category}%`)
+        .or(`category.ilike.%${category}%,title.ilike.%${category}%`)
         .order('date', { ascending: false })
         .limit(limit)
 
@@ -99,10 +99,11 @@ export const getArticlesByCategory = cache(async (category: string, limit = 12):
 })
 
 export const getArticlesByCity = cache(async (city: string, limit = 12): Promise<Article[]> => {
+    // Busca na coluna city, mas faz fallback pro título e pro texto se a coluna city estiver vazia
     const { data, error } = await supabase
         .from('posts')
         .select('*')
-        .ilike('city', `%${city}%`)
+        .or(`city.ilike.%${city}%,title.ilike.%${city}%,content.ilike.%${city}%`)
         .order('date', { ascending: false })
         .limit(limit)
 
@@ -127,7 +128,8 @@ export async function searchArticles(query: string, limit = 20): Promise<Article
     const { data, error } = await supabase
         .from('posts')
         .select('*')
-        .or(`title.ilike.%${query}%,summary.ilike.%${query}%`)
+        // Procura em múltiplos campos para garantir que vai achar
+        .or(`title.ilike.%${query}%,summary.ilike.%${query}%,content.ilike.%${query}%,category.ilike.%${query}%,city.ilike.%${query}%`)
         .order('date', { ascending: false })
         .limit(limit)
 
