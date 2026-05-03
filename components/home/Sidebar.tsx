@@ -1,16 +1,17 @@
-import Link from "next/link"
-import Image from "next/image"
-import { getMostReadArticles, getLatestArticles } from "@/lib/data/articles"
+import { getMostReadArticles, getLatestArticles } from "@/lib/data/articles-db"
 import { ArticleCard } from "@/components/news/ArticleCard"
 import { NewsletterForm } from "@/components/forms/NewsletterForm"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { AdSpace } from "@/components/ui/AdSpace"
 import { Instagram, Youtube, Facebook } from "lucide-react"
 import { SITE_CONFIG } from "@/lib/constants"
+import Link from "next/link"
 
-export function Sidebar() {
-    const mostRead = getMostReadArticles(5)
-    const latestNews = getLatestArticles(5)
+export async function Sidebar() {
+    const [mostRead, latestNews] = await Promise.all([
+        getMostReadArticles(5),
+        getLatestArticles(5),
+    ])
 
     return (
         <aside className="w-full space-y-8">

@@ -1,8 +1,8 @@
-import { getLatestArticles } from "@/lib/data/articles"
+import { getLatestArticles } from "@/lib/data/articles-db"
 import { ArticleCard } from "@/components/news/ArticleCard"
 
-export function LatestNews() {
-    const latest = getLatestArticles(6)
+export async function LatestNews() {
+    const latest = await getLatestArticles(6)
 
     return (
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
@@ -12,4 +12,3 @@ export function LatestNews() {
         </div>
     )
 }
-

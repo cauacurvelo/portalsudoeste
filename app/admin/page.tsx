@@ -7,10 +7,9 @@ import {
     Plus,
     Clock,
     CheckCircle,
-    AlertCircle,
     Edit3,
 } from "lucide-react"
-import { ARTICLES } from "@/lib/data/articles"
+import { getLatestArticles, getTotalArticleCount } from "@/lib/data/articles-db"
 import Link from "next/link"
 
 function StatCard({ icon: Icon, label, value, href, color }: {
@@ -42,14 +41,11 @@ function Widget({ title, children }: { title: string; children: React.ReactNode 
     )
 }
 
-export default function AdminDashboard() {
-    const totalArticles = ARTICLES.length
-    const recentArticles = ARTICLES.slice(0, 6)
-    const publishedToday = ARTICLES.filter(a => {
-        const d = new Date(a.date)
-        const today = new Date()
-        return d.toDateString() === today.toDateString()
-    }).length
+export default async function AdminDashboard() {
+    const [totalArticles, recentArticles] = await Promise.all([
+        getTotalArticleCount(),
+        getLatestArticles(6),
+    ])
 
     return (
         <div className="space-y-6">
@@ -95,7 +91,7 @@ export default function AdminDashboard() {
                 <StatCard
                     icon={TrendingUp}
                     label="Publicados hoje"
-                    value={publishedToday || "0"}
+                    value="—"
                     href="/admin/noticias"
                     color="bg-[#00a32a]"
                 />

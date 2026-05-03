@@ -21,8 +21,8 @@ const nextConfig: NextConfig = {
       },
       {
         protocol: 'https',
-        hostname: 'github.com',
-      }
+        hostname: 'cnnqmguqbsdcojakslse.supabase.co',
+      },
     ],
   },
 };
