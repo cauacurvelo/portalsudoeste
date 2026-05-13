@@ -168,16 +168,7 @@ export async function ArticleDetail({ article }: ArticleDetailProps) {
                             {/* Content */}
                             <div className="px-6 md:px-10 py-8">
                                 <div
-                                    className="
-                                        prose prose-lg max-w-none
-                                        prose-headings:font-serif prose-headings:text-brand-blue-primary prose-headings:font-black
-                                        prose-p:text-gray-700 prose-p:leading-[1.85] prose-p:text-[17px]
-                                        prose-a:text-brand-red prose-a:no-underline hover:prose-a:underline
-                                        prose-strong:text-gray-900
-                                        prose-img:rounded prose-img:mx-auto prose-img:shadow-md
-                                        prose-blockquote:border-brand-red prose-blockquote:bg-gray-50 prose-blockquote:py-1 prose-blockquote:rounded-r
-                                        wp-content
-                                    "
+                                    className="article-body wp-content"
                                     dangerouslySetInnerHTML={{ __html: article.content }}
                                 />
                             </div>
