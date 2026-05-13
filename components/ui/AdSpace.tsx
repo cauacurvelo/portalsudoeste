@@ -32,8 +32,6 @@ export async function AdSpace({ label = "Espaço Publicitário", width, height, 
           />
         </div>
         
-        {/* Label (Optional) */}
-        <span className="text-[9px] font-black text-gray-400 uppercase tracking-[0.4em] mt-2 mb-2">{label}</span>
       </div>
     </div>
   )
