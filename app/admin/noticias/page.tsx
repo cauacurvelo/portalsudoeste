@@ -3,8 +3,14 @@ import { format } from "date-fns"
 import { ptBR } from "date-fns/locale"
 import { getLatestArticles, getTotalArticleCount } from "@/lib/data/articles-db"
 import { MessageSquare } from "lucide-react"
+import { DeletePostButton } from "@/components/admin/DeletePostButton"
 
-export default async function AdminNoticiasPage() {
+export default async function AdminNoticiasPage({
+    searchParams,
+}: {
+    searchParams: Promise<{ created?: string }>
+}) {
+    const params = await searchParams
     const articles = await getLatestArticles(50)
     const totalCount = await getTotalArticleCount()
 
@@ -17,105 +23,83 @@ export default async function AdminNoticiasPage() {
                 </Link>
             </div>
 
+            {params.created && (
+                <div className="bg-green-50 border border-green-200 text-green-700 p-3 rounded-sm text-sm flex items-center gap-2">
+                    ✅ Notícia publicada com sucesso!{" "}
+                    <Link href={`/noticia/${params.created}`} target="_blank" className="underline font-semibold">
+                        Ver no site →
+                    </Link>
+                </div>
+            )}
+
             {/* Status Links */}
             <ul className="flex text-[13px] text-[#2271b1] mb-2 gap-1">
-                <li><Link href="#" className="text-[#1d2327] font-semibold">Tudo <span className="text-[#646970] font-normal">({totalCount})</span></Link> | </li>
-                <li><Link href="#" className="hover:underline">Publicados <span className="text-[#646970]">({totalCount})</span></Link></li>
+                <li>
+                    <span className="text-[#1d2327] font-semibold">
+                        Tudo <span className="text-[#646970] font-normal">({totalCount})</span>
+                    </span>
+                </li>
             </ul>
 
-            {/* Filter Bar */}
-            <div className="flex items-center justify-between mb-2">
-                <div className="flex items-center gap-2">
-                    <select className="border border-[#8c8f94] p-1 text-[13px] focus:border-[#2271b1] focus:ring-1 focus:ring-[#2271b1] outline-none rounded-sm">
-                        <option>Ações em massa</option>
-                        <option>Editar</option>
-                        <option>Mover para a lixeira</option>
-                    </select>
-                    <button className="border border-[#2271b1] text-[#2271b1] px-3 py-1 text-[13px] rounded-sm hover:bg-[#f0f0f1]">Aplicar</button>
-
-                    <select className="border border-[#8c8f94] p-1 text-[13px] focus:border-[#2271b1] focus:ring-1 focus:ring-[#2271b1] outline-none rounded-sm ml-2">
-                        <option>Todas as datas</option>
-                        <option>Abril 2026</option>
-                    </select>
-                    <select className="border border-[#8c8f94] p-1 text-[13px] focus:border-[#2271b1] focus:ring-1 focus:ring-[#2271b1] outline-none rounded-sm">
-                        <option>Todas as categorias</option>
-                        <option>Policial</option>
-                        <option>Política</option>
-                    </select>
-                    <button className="border border-[#2271b1] text-[#2271b1] px-3 py-1 text-[13px] rounded-sm hover:bg-[#f0f0f1]">Filtrar</button>
-                </div>
-
-                <div className="flex items-center gap-2">
-                    <input type="text" className="border border-[#8c8f94] p-1 text-[13px] focus:border-[#2271b1] focus:ring-1 focus:ring-[#2271b1] outline-none rounded-sm w-48" />
-                    <button className="border border-[#2271b1] text-[#2271b1] px-3 py-1 text-[13px] rounded-sm hover:bg-[#f0f0f1]">Pesquisar posts</button>
-                </div>
-            </div>
-
             {/* Posts Table */}
-            <div className="bg-white border border-[#c3c4c7] shadow-sm rounded-sm">
+            <div className="bg-white border border-[#c3c4c7] shadow-sm rounded-sm overflow-x-auto">
                 <table className="w-full text-left text-[13px] text-[#3c434a]">
                     <thead>
                         <tr className="border-b border-[#c3c4c7] bg-[#f6f7f7]">
-                            <th className="py-2 px-3 w-8"><input type="checkbox" className="border-[#8c8f94]" /></th>
                             <th className="py-2 px-3 font-normal text-[#1d2327]">Título</th>
                             <th className="py-2 px-3 font-normal text-[#1d2327]">Autor</th>
-                            <th className="py-2 px-3 font-normal text-[#1d2327]">Categorias</th>
-                            <th className="py-2 px-3 font-normal text-[#1d2327]">Tags</th>
-                            <th className="py-2 px-3 font-normal text-[#1d2327] w-12 text-center"><MessageSquare className="w-4 h-4 inline-block text-[#8c8f94]" /></th>
+                            <th className="py-2 px-3 font-normal text-[#1d2327]">Categoria</th>
+                            <th className="py-2 px-3 font-normal text-[#1d2327] w-12 text-center">
+                                <MessageSquare className="w-4 h-4 inline-block text-[#8c8f94]" />
+                            </th>
                             <th className="py-2 px-3 font-normal text-[#1d2327]">Data</th>
                         </tr>
                     </thead>
                     <tbody className="divide-y divide-[#f0f0f1]">
                         {articles.map((article) => (
                             <tr key={article.id} className="hover:bg-[#f6f7f7] group">
-                                <td className="py-2 px-3 align-top"><input type="checkbox" className="border-[#8c8f94]" /></td>
                                 <td className="py-2 px-3 align-top">
-                                    <Link href={`/admin/noticias/nova`} className="text-[#2271b1] font-bold text-[14px] hover:underline block mb-1">
+                                    <Link
+                                        href={`/admin/noticias/${article.id}/editar`}
+                                        className="text-[#2271b1] font-bold text-[14px] hover:underline block mb-1 line-clamp-2"
+                                    >
                                         {article.title}
                                     </Link>
                                     <div className="invisible group-hover:visible flex gap-2 text-[13px]">
-                                        <Link href="#" className="text-[#2271b1] hover:underline">Editar</Link> | 
-                                        <Link href="#" className="text-[#d63638] hover:underline">Lixeira</Link> | 
-                                        <Link href={`/noticia/${article.slug}`} target="_blank" className="text-[#2271b1] hover:underline">Ver</Link>
+                                        <Link href={`/admin/noticias/${article.id}/editar`} className="text-[#2271b1] hover:underline">
+                                            Editar
+                                        </Link>
+                                        {" | "}
+                                        <DeletePostButton articleId={article.id} articleTitle={article.title} />
+                                        {" | "}
+                                        <Link href={`/noticia/${article.slug}`} target="_blank" className="text-[#2271b1] hover:underline">
+                                            Ver
+                                        </Link>
                                     </div>
                                 </td>
-                                <td className="py-2 px-3 align-top text-[#2271b1] hover:underline cursor-pointer">{article.author}</td>
-                                <td className="py-2 px-3 align-top text-[#2271b1] hover:underline cursor-pointer">{article.category}</td>
-                                <td className="py-2 px-3 align-top">—</td>
-                                <td className="py-2 px-3 align-top text-center">—</td>
+                                <td className="py-2 px-3 align-top text-[#646970]">{article.author}</td>
                                 <td className="py-2 px-3 align-top">
-                                    Publicado<br/>
-                                    <span className="text-[#646970]">{format(new Date(article.date), "dd/MM/yyyy", { locale: ptBR })}</span>
+                                    <span className="bg-blue-50 text-blue-700 px-2 py-0.5 rounded text-[11px] font-semibold">
+                                        {article.category}
+                                    </span>
+                                </td>
+                                <td className="py-2 px-3 align-top text-center text-[#646970]">{article.views || 0}</td>
+                                <td className="py-2 px-3 align-top whitespace-nowrap">
+                                    <span className="bg-green-100 text-green-800 text-[10px] font-bold px-2 py-0.5 rounded block w-fit mb-0.5">
+                                        Publicado
+                                    </span>
+                                    <span className="text-[#646970]">
+                                        {format(new Date(article.date), "dd/MM/yyyy", { locale: ptBR })}
+                                    </span>
                                 </td>
                             </tr>
                         ))}
                     </tbody>
-                    <tfoot>
-                        <tr className="border-t border-[#c3c4c7] bg-[#f6f7f7]">
-                            <th className="py-2 px-3 w-8"><input type="checkbox" className="border-[#8c8f94]" /></th>
-                            <th className="py-2 px-3 font-normal text-[#1d2327]">Título</th>
-                            <th className="py-2 px-3 font-normal text-[#1d2327]">Autor</th>
-                            <th className="py-2 px-3 font-normal text-[#1d2327]">Categorias</th>
-                            <th className="py-2 px-3 font-normal text-[#1d2327]">Tags</th>
-                            <th className="py-2 px-3 font-normal text-[#1d2327] w-12 text-center"><MessageSquare className="w-4 h-4 inline-block text-[#8c8f94]" /></th>
-                            <th className="py-2 px-3 font-normal text-[#1d2327]">Data</th>
-                        </tr>
-                    </tfoot>
                 </table>
             </div>
-            
-            <div className="flex items-center justify-between mt-4">
-                <div className="flex items-center gap-2">
-                    <select className="border border-[#8c8f94] p-1 text-[13px] focus:border-[#2271b1] focus:ring-1 focus:ring-[#2271b1] outline-none rounded-sm">
-                        <option>Ações em massa</option>
-                        <option>Editar</option>
-                        <option>Mover para a lixeira</option>
-                    </select>
-                    <button className="border border-[#2271b1] text-[#2271b1] px-3 py-1 text-[13px] rounded-sm hover:bg-[#f0f0f1]">Aplicar</button>
-                </div>
-                <div className="text-[13px] text-[#3c434a]">
-                    {totalCount} itens
-                </div>
+
+            <div className="text-[13px] text-[#3c434a] text-right">
+                Exibindo {articles.length} de {totalCount} notícias
             </div>
         </div>
     )
