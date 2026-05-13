@@ -43,6 +43,11 @@ export default async function Home() {
             <div className="portal-container py-4 sm:py-6 lg:py-10">
                 {/* Hero */}
                 <HeroCarousel />
+                
+                {/* Banner de Topo (Abaixo do Hero) */}
+                <div className="mt-10 lg:mt-14 border-b border-gray-100 pb-10">
+                    <AdSpace position="topo" />
+                </div>
 
                 <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 lg:gap-10 mt-5 lg:mt-10">
                     {/* Main Content */}
@@ -58,7 +63,6 @@ export default async function Home() {
                             </div>
                         </section>
 
-                        <AdSpace position="topo" />
 
                         {/* Últimas Notícias */}
                         <section>

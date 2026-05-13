@@ -159,4 +159,26 @@
   .portal-container {
     @apply container mx-auto px-4 sm:px-6 md:px-10 lg:px-16 max-w-[1400px];
   }
+
+  /* WP Content Image Cleanup */
+  .wp-content img {
+    max-width: 100%;
+    height: auto;
+    display: block;
+    margin: 1.5rem auto;
+    border-radius: 4px;
+    background-color: #f9f9f9;
+  }
+
+  /* Hide broken images and their alt text if they fail to load */
+  .wp-content img:not([src]),
+  .wp-content img[src=""] {
+    display: none !important;
+  }
+
+  /* Gracefully handle failed images in browsers that support it */
+  .wp-content img {
+    color: transparent;
+    text-indent: -10000px;
+  }
 }
