@@ -60,15 +60,13 @@ export default async function ArticlePage({ params }: PageProps) {
     }
 
     return (
-        <div className="bg-white">
+        <>
             <ViewTracker articleId={article.id} />
             <script
                 type="application/ld+json"
                 dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
             />
-            <div className="container mx-auto px-4">
-                <ArticleDetail article={article} />
-            </div>
-        </div>
+            <ArticleDetail article={article} />
+        </>
     )
 }
