@@ -2,11 +2,7 @@ import type { Metadata } from "next";
 import { Source_Sans_3, Playfair_Display, Source_Serif_4 } from "next/font/google";
 import "./globals.css";
 import { ThemeProvider } from "@/components/providers/ThemeProvider";
-import { TopBar } from "@/components/layout/TopBar";
-import { SiteHeader } from "@/components/layout/SiteHeader";
-import { MainNav } from "@/components/layout/MainNav";
-import { NewsTicker } from "@/components/layout/NewsTicker";
-import { SiteFooter } from "@/components/layout/SiteFooter";
+import { ClientLayoutWrapper } from "@/components/layout/ClientLayoutWrapper";
 
 
 const sourceSans = Source_Sans_3({
@@ -54,11 +50,9 @@ export default function RootLayout({
           enableSystem
           disableTransitionOnChange
         >
-          <MainNav />
-          <NewsTicker />
-          <SiteHeader />
-          <main className="flex-grow">{children}</main>
-          <SiteFooter />
+          <ClientLayoutWrapper>
+            {children}
+          </ClientLayoutWrapper>
 
         </ThemeProvider>
       </body>
