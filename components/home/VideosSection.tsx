@@ -33,7 +33,7 @@ export async function VideosSection() {
                     {/* Featured Video */}
                     <div className="lg:col-span-7 group">
                         <Link href={`/noticia/${featured.slug}`} className="block relative aspect-video overflow-hidden rounded-lg shadow-2xl mb-4 cursor-pointer">
-                            <Image src={featured.image} alt={featured.title} fill className="object-cover transition-transform duration-700 group-hover:scale-105" />
+                            <Image src={featured.image} alt={featured.title} fill sizes="(max-width: 1024px) 100vw, 60vw" className="object-cover transition-transform duration-700 group-hover:scale-105" />
                             <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent" />
 
                             {/* Play button */}
@@ -58,7 +58,7 @@ export async function VideosSection() {
                         {rest.map((video) => (
                             <Link key={video.id} href={`/noticia/${video.slug}`} className="group cursor-pointer flex gap-4 items-start p-3 rounded-lg hover:bg-white/5 transition-all duration-300">
                                 <div className="relative w-36 aspect-video shrink-0 overflow-hidden rounded-sm shadow-lg">
-                                    <Image src={video.image} alt={video.title} fill className="object-cover transition-transform duration-500 group-hover:scale-110" />
+                                    <Image src={video.image} alt={video.title} fill sizes="144px" className="object-cover transition-transform duration-500 group-hover:scale-110" />
                                     <div className="absolute inset-0 bg-black/30" />
                                     <div className="absolute inset-0 flex items-center justify-center">
                                         <div className="w-8 h-8 rounded-full bg-white/20 backdrop-blur-sm border border-white/30 flex items-center justify-center group-hover:bg-brand-red transition-all duration-300">

@@ -25,6 +25,7 @@ export function ArticleCard({ article, variant = "default" }: ArticleCardProps) 
                         src={article.image}
                         alt={article.title}
                         fill
+                        sizes="(max-width: 768px) 100vw, 200px"
                         className="object-cover transition-transform duration-700 group-hover:scale-110"
                     />
                 </div>
@@ -50,7 +51,7 @@ export function ArticleCard({ article, variant = "default" }: ArticleCardProps) 
             <Link href={`/noticia/${article.slug}`}
                 className="group flex gap-3 py-4 border-b border-gray-100 last:border-0 items-center hover:translate-x-1 transition-all duration-300">
                 <div className="relative w-16 h-16 shrink-0 overflow-hidden rounded-sm bg-gray-100">
-                    <Image src={article.image} alt={article.title} fill className="object-cover transition-transform duration-500 group-hover:scale-110" />
+                    <Image src={article.image} alt={article.title} fill sizes="64px" className="object-cover transition-transform duration-500 group-hover:scale-110" />
                 </div>
                 <div className="flex flex-col gap-1">
                     <h4 className="text-xs font-bold font-serif leading-snug text-gray-800 group-hover:text-brand-blue-primary transition-colors line-clamp-2">
@@ -71,6 +72,7 @@ export function ArticleCard({ article, variant = "default" }: ArticleCardProps) 
                     src={article.image}
                     alt={article.title}
                     fill
+                    sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
                     className="object-cover transition-transform duration-700 group-hover:scale-110"
                 />
                 <div className="absolute inset-0 bg-brand-blue-primary/0 group-hover:bg-brand-blue-primary/10 transition-all duration-500" />
