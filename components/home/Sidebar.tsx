@@ -2,7 +2,7 @@ import { getMostReadArticles, getLatestArticles } from "@/lib/data/articles-db"
 import { ArticleCard } from "@/components/news/ArticleCard"
 import { NewsletterForm } from "@/components/forms/NewsletterForm"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
-import { AdSpace } from "@/components/ui/AdSpace"
+
 import { Instagram, Youtube, Facebook } from "lucide-react"
 import { SITE_CONFIG } from "@/lib/constants"
 import Link from "next/link"
@@ -72,8 +72,7 @@ export async function Sidebar() {
                 </Tabs>
             </div>
 
-            {/* Ad Space */}
-            <AdSpace width={300} height={250} />
+
 
             {/* Social CTA */}
             <div className="border border-gray-100 rounded-sm p-5">

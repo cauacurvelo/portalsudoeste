@@ -7,7 +7,6 @@ import { HeroCarousel } from "@/components/home/HeroCarousel"
 import { Sidebar } from "@/components/home/Sidebar"
 import { ArticleCard } from "@/components/news/ArticleCard"
 import { VideosSection } from "@/components/home/VideosSection"
-import { AdSpace } from "@/components/ui/AdSpace"
 import { LatestNews } from "@/components/home/LatestNews"
 import Link from "next/link"
 import Image from "next/image"
@@ -58,8 +57,7 @@ export default async function Home() {
                             </div>
                         </section>
 
-                        {/* Ad Banner */}
-                        <AdSpace label="Publicidade" width={728} height={90} />
+
 
                         {/* Últimas Notícias */}
                         <section>

@@ -122,11 +122,6 @@ export async function ArticleDetail({ article }: ArticleDetailProps) {
                 {/* Sidebar Mini (Optional for desktop) */}
                 <div className="hidden lg:block w-80 shrink-0">
                     <div className="sticky top-24 space-y-12">
-                        <div className="w-full h-80 bg-gray-100 border border-dashed border-gray-200 flex flex-col items-center justify-center text-center p-6">
-                            <span className="text-xs font-bold text-gray-400 uppercase tracking-widest mb-4">Publicidade</span>
-                            <div className="w-full h-full bg-white/50 border border-gray-100" />
-                        </div>
-
                         <div>
                             <h3 className="text-xs font-black uppercase text-brand-blue-primary mb-6 tracking-widest border-l-4 border-brand-red pl-3">Relacionadas</h3>
                             <div className="space-y-6">
