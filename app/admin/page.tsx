@@ -9,8 +9,14 @@ import {
     CheckCircle,
     Edit3,
 } from "lucide-react"
-import { getLatestArticles, getTotalArticleCount } from "@/lib/data/articles-db"
+import { getLatestArticles, getTotalArticleCount, getPublishedTodayCount, getTopViewsSum } from "@/lib/data/articles-db"
 import Link from "next/link"
+
+function formatNumber(num: number): string {
+    if (num >= 1000000) return (num / 1000000).toFixed(1) + 'M'
+    if (num >= 1000) return (num / 1000).toFixed(1) + 'K'
+    return num.toString()
+}
 
 function StatCard({ icon: Icon, label, value, href, color }: {
     icon: any; label: string; value: string | number; href: string; color: string
@@ -42,9 +48,11 @@ function Widget({ title, children }: { title: string; children: React.ReactNode 
 }
 
 export default async function AdminDashboard() {
-    const [totalArticles, recentArticles] = await Promise.all([
+    const [totalArticles, recentArticles, todayCount, topViews] = await Promise.all([
         getTotalArticleCount(),
         getLatestArticles(6),
+        getPublishedTodayCount(),
+        getTopViewsSum(),
     ])
 
     return (
@@ -91,22 +99,22 @@ export default async function AdminDashboard() {
                 <StatCard
                     icon={TrendingUp}
                     label="Publicados hoje"
-                    value="—"
+                    value={todayCount}
                     href="/admin/noticias"
                     color="bg-[#00a32a]"
                 />
                 <StatCard
                     icon={MessageSquare}
                     label="Comentários"
-                    value="12"
+                    value="0"
                     href="/admin/comentarios"
                     color="bg-[#d63638]"
                 />
                 <StatCard
                     icon={Eye}
-                    label="Visualizações hoje"
-                    value="1.2K"
-                    href="/admin/em-construcao"
+                    label="Visitas (Top 100)"
+                    value={formatNumber(topViews)}
+                    href="/admin/noticias"
                     color="bg-[#996800]"
                 />
             </div>
@@ -189,13 +197,13 @@ export default async function AdminDashboard() {
                                 <span className="flex items-center gap-2">
                                     <FileText className="w-4 h-4 text-[#a7aaad]" /> Páginas
                                 </span>
-                                <span className="font-semibold text-[#1d2327]">4</span>
+                                <span className="font-semibold text-[#1d2327]">6</span>
                             </Link>
                             <Link href="/admin/comentarios" className="flex items-center justify-between text-[#2271b1] hover:underline py-1">
                                 <span className="flex items-center gap-2">
                                     <MessageSquare className="w-4 h-4 text-[#a7aaad]" /> Comentários
                                 </span>
-                                <span className="font-semibold text-[#1d2327]">12</span>
+                                <span className="font-semibold text-[#1d2327]">0</span>
                             </Link>
                         </div>
                         <div className="mt-4 pt-3 border-t border-[#f0f0f1] text-[12px] text-[#646970]">

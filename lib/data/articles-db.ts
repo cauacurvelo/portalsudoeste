@@ -144,6 +144,29 @@ export async function getTotalArticleCount(): Promise<number> {
     return count || 0
 }
 
+export async function getPublishedTodayCount(): Promise<number> {
+    const today = new Date()
+    today.setHours(0, 0, 0, 0)
+    
+    const { count } = await supabase
+        .from('posts')
+        .select('*', { count: 'exact', head: true })
+        .gte('date', today.toISOString())
+
+    return count || 0
+}
+
+export async function getTopViewsSum(): Promise<number> {
+    const { data } = await supabase
+        .from('posts')
+        .select('views')
+        .order('views', { ascending: false })
+        .limit(100)
+    
+    if (!data) return 0
+    return data.reduce((acc, curr) => acc + (curr.views || 0), 0)
+}
+
 export const getArticlesWithVideo = cache(async (limit = 4): Promise<Article[]> => {
     const { data, error } = await supabase
         .from('posts')
