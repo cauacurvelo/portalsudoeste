@@ -94,10 +94,10 @@
     background-color: var(--background);
     color: var(--foreground);
     font-feature-settings: "rlig" 1, "calt" 1;
-    scroll-behavior: smooth;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
     text-rendering: optimizeLegibility;
+    overflow-x: hidden;
   }
 
   a, button {
@@ -138,6 +138,8 @@
 
 .animate-scroll-text {
   animation: scroll-text 40s linear infinite;
+  will-change: transform;
+  contain: layout style;
 }
 
 @keyframes ticker-scroll {
@@ -147,6 +149,8 @@
 
 .animate-ticker-scroll {
   animation: ticker-scroll 35s linear infinite;
+  will-change: transform;
+  contain: layout style;
 }
 
 @keyframes fadeInUp {
@@ -189,5 +193,18 @@
   .wp-content img {
     color: transparent;
     text-indent: -10000px;
+  }
+
+  /* Contain iframes inside article content to prevent memory leaks */
+  .wp-content iframe {
+    max-width: 100%;
+    aspect-ratio: 16/9;
+    height: auto;
+    contain: strict;
+  }
+
+  /* Prevent layout compositor thrashing from hover transitions on article content */
+  .wp-content * {
+    transition: none !important;
   }
 }
