@@ -3,6 +3,10 @@ import { Source_Sans_3, Playfair_Display, Source_Serif_4 } from "next/font/googl
 import "./globals.css";
 import { ThemeProvider } from "@/components/providers/ThemeProvider";
 import { ClientLayoutWrapper } from "@/components/layout/ClientLayoutWrapper";
+import { MainNav } from "@/components/layout/MainNav";
+import { NewsTicker } from "@/components/layout/NewsTicker";
+import { SiteHeader } from "@/components/layout/SiteHeader";
+import { SiteFooter } from "@/components/layout/SiteFooter";
 
 
 const sourceSans = Source_Sans_3({
@@ -50,7 +54,12 @@ export default function RootLayout({
           enableSystem
           disableTransitionOnChange
         >
-          <ClientLayoutWrapper>
+          <ClientLayoutWrapper
+            nav={<MainNav />}
+            ticker={<NewsTicker />}
+            header={<SiteHeader />}
+            footer={<SiteFooter />}
+          >
             {children}
           </ClientLayoutWrapper>
 

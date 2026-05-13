@@ -23,6 +23,18 @@ const nextConfig: NextConfig = {
         protocol: 'https',
         hostname: 'cnnqmguqbsdcojakslse.supabase.co',
       },
+      {
+        protocol: 'https',
+        hostname: 's2-g1.glbimg.com',
+      },
+      {
+        protocol: 'https',
+        hostname: 's.glbimg.com',
+      },
+      {
+        protocol: 'https',
+        hostname: 'i.s3.glbimg.com',
+      },
     ],
   },
 };
