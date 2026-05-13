@@ -35,21 +35,21 @@ const menuGroups = [
                 children: [
                     { title: "Todos os Posts", href: "/admin/noticias" },
                     { title: "Adicionar Novo", href: "/admin/noticias/nova" },
-                    { title: "Categorias", href: "#" },
-                    { title: "Tags", href: "#" },
+                    { title: "Categorias", href: "/admin/em-construcao" },
+                    { title: "Tags", href: "/admin/em-construcao" },
                 ]
             },
-            { title: "Mídia", icon: ImageIcon, href: "#" },
+            { title: "Mídia", icon: ImageIcon, href: "/admin/em-construcao" },
             { title: "Propagandas", icon: ImageIcon, href: "/admin/propagandas" },
-            { title: "Páginas", icon: FileText, href: "#" },
-            { title: "Comentários", icon: MessageSquare, href: "#", badge: "3" },
+            { title: "Páginas", icon: FileText, href: "/admin/em-construcao" },
+            { title: "Comentários", icon: MessageSquare, href: "/admin/em-construcao", badge: "3" },
         ]
     },
     {
         label: "Configurações",
         items: [
-            { title: "Usuários", icon: Users, href: "#" },
-            { title: "Configurações", icon: Settings, href: "#" },
+            { title: "Usuários", icon: Users, href: "/admin/em-construcao" },
+            { title: "Configurações", icon: Settings, href: "/admin/em-construcao" },
         ]
     },
 ]

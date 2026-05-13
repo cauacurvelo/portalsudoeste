@@ -99,14 +99,14 @@ export default async function AdminDashboard() {
                     icon={MessageSquare}
                     label="Comentários"
                     value="12"
-                    href="#"
+                    href="/admin/em-construcao"
                     color="bg-[#d63638]"
                 />
                 <StatCard
                     icon={Eye}
                     label="Visualizações hoje"
                     value="1.2K"
-                    href="#"
+                    href="/admin/em-construcao"
                     color="bg-[#996800]"
                 />
             </div>
@@ -185,13 +185,13 @@ export default async function AdminDashboard() {
                                 </span>
                                 <span className="font-semibold text-[#1d2327]">{totalArticles}</span>
                             </Link>
-                            <Link href="#" className="flex items-center justify-between text-[#2271b1] hover:underline py-1">
+                            <Link href="/admin/em-construcao" className="flex items-center justify-between text-[#2271b1] hover:underline py-1">
                                 <span className="flex items-center gap-2">
                                     <FileText className="w-4 h-4 text-[#a7aaad]" /> Páginas
                                 </span>
                                 <span className="font-semibold text-[#1d2327]">4</span>
                             </Link>
-                            <Link href="#" className="flex items-center justify-between text-[#2271b1] hover:underline py-1">
+                            <Link href="/admin/em-construcao" className="flex items-center justify-between text-[#2271b1] hover:underline py-1">
                                 <span className="flex items-center gap-2">
                                     <MessageSquare className="w-4 h-4 text-[#a7aaad]" /> Comentários
                                 </span>
