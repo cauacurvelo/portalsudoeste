@@ -57,13 +57,13 @@ export default function LoginPage() {
                                 </div>
                             )}
                             <div className="space-y-2">
-                                <Label htmlFor="email">E-mail</Label>
+                                <Label htmlFor="username">Usuário</Label>
                                 <div className="relative">
                                     <Input
-                                        id="email"
-                                        name="email"
-                                        type="email"
-                                        placeholder="admin@portaldosudoeste.com.br"
+                                        id="username"
+                                        name="username"
+                                        type="text"
+                                        placeholder="editor"
                                         required
                                         className="pl-10 h-12"
                                     />

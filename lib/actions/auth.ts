@@ -4,14 +4,14 @@ import { cookies } from "next/headers"
 import { redirect } from "next/navigation"
 
 export async function loginAction(formData: FormData) {
-    const email = formData.get("email") as string
+    const username = formData.get("username") as string
     const password = formData.get("password") as string
 
     // In production, validate against a real database
-    const validEmail = process.env.ADMIN_EMAIL || "admin@portaldosudoeste.com.br"
-    const validPassword = process.env.ADMIN_PASSWORD || "admin123"
+    const validUsername = process.env.ADMIN_USERNAME || "editor"
+    const validPassword = process.env.ADMIN_PASSWORD || "Portal@2026!"
 
-    if (email === validEmail && password === validPassword) {
+    if (username === validUsername && password === validPassword) {
         const cookieStore = await cookies()
         cookieStore.set("admin-auth", "authenticated", {
             httpOnly: true,
@@ -23,7 +23,7 @@ export async function loginAction(formData: FormData) {
         redirect("/admin")
     }
 
-    return { error: "Credenciais inválidas. Verifique seu e-mail e senha." }
+    return { error: "Credenciais inválidas. Verifique seu usuário e senha." }
 }
 
 export async function logoutAction() {
