@@ -29,8 +29,8 @@ export function NewsTickerClient({ articles }: NewsTickerClientProps) {
 
                 <div className="flex-1 overflow-hidden h-full flex items-center ml-3">
                     <div
-                        className="flex items-center whitespace-nowrap gap-10 text-[10px] sm:text-[11px] font-semibold text-gray-700 uppercase tracking-wide"
-                        style={{ animation: "ticker-scroll 35s linear infinite", willChange: "transform" }}
+                        className="flex items-center whitespace-nowrap gap-10 text-[10px] sm:text-[11px] font-semibold text-gray-700 uppercase tracking-wide animate-ticker-scroll"
+                        style={{ willChange: "transform" }}
                     >
                         {headlines.map((article, i) => (
                             <Link
@@ -46,12 +46,7 @@ export function NewsTickerClient({ articles }: NewsTickerClientProps) {
                 </div>
             </div>
 
-            <style jsx>{`
-                @keyframes ticker-scroll {
-                    0% { transform: translateX(0); }
-                    100% { transform: translateX(-50%); }
-                }
-            `}</style>
+
         </div>
     )
 }
