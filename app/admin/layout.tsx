@@ -40,6 +40,7 @@ const menuGroups = [
                 ]
             },
             { title: "Mídia", icon: ImageIcon, href: "#" },
+            { title: "Propagandas", icon: ImageIcon, href: "/admin/propagandas" },
             { title: "Páginas", icon: FileText, href: "#" },
             { title: "Comentários", icon: MessageSquare, href: "#", badge: "3" },
         ]

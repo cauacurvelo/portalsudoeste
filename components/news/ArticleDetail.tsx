@@ -6,6 +6,7 @@ import { Facebook, Twitter, MessageCircle, Calendar, Clock, User, Share2, ArrowL
 import { Article, getRelatedArticles } from "@/lib/data/articles-db"
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
+import { AdSpace } from "@/components/ui/AdSpace"
 import { slugify } from "@/lib/utils"
 
 interface ArticleDetailProps {
@@ -122,6 +123,7 @@ export async function ArticleDetail({ article }: ArticleDetailProps) {
                 {/* Sidebar Mini (Optional for desktop) */}
                 <div className="hidden lg:block w-80 shrink-0">
                     <div className="sticky top-24 space-y-12">
+                        <AdSpace position="meio" />
                         <div>
                             <h3 className="text-xs font-black uppercase text-brand-blue-primary mb-6 tracking-widest border-l-4 border-brand-red pl-3">Relacionadas</h3>
                             <div className="space-y-6">
