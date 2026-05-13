@@ -86,7 +86,7 @@ export function ArticleCard({ article, variant = "default" }: ArticleCardProps) 
                 <h3 className="text-lg md:text-xl font-serif font-black leading-tight text-brand-blue-primary group-hover:text-brand-red transition-colors line-clamp-2">
                     {article.title}
                 </h3>
-                <p className="text-sm text-gray-500 line-clamp-2 leading-relaxed">
+                <p className="text-sm text-gray-500 line-clamp-4 leading-relaxed">
                     {article.summary}
                 </p>
                 <div className="flex items-center justify-between pt-3 border-t border-gray-100 text-[9px] font-black text-gray-400 uppercase tracking-[0.2em]">

@@ -97,7 +97,7 @@ export async function ArticleDetail({ article }: ArticleDetailProps) {
                     </span>
 
                     {/* Title */}
-                    <h1 className="text-3xl md:text-4xl lg:text-5xl font-serif font-black text-white leading-[1.1] tracking-tight max-w-4xl mb-6">
+                    <h1 className="text-3xl md:text-4xl lg:text-5xl font-serif font-black text-white leading-[1.1] tracking-tight max-w-4xl mb-6 drop-shadow-sm">
                         {article.title}
                     </h1>
 

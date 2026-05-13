@@ -17,7 +17,7 @@ export function NewsTickerClient({ articles }: NewsTickerClientProps) {
     const headlines = [...articles, ...articles]
 
     return (
-        <div className="w-full bg-brand-blue-primary/95 h-9 flex items-center overflow-hidden">
+        <div className="w-full bg-[#0F1442] h-9 flex items-center overflow-hidden">
             <div className="flex items-center h-full w-full overflow-hidden">
                 <div className="flex items-center gap-1.5 bg-brand-blue-primary text-white text-[9px] sm:text-[10px] font-black tracking-[0.1em] px-3 h-full shrink-0 z-10 relative">
                     <TrendingUp className="w-3 h-3 shrink-0" />

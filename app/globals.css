@@ -211,14 +211,14 @@
   /* ── Article Body Typography ─────────────────────────────── */
   .article-body {
     font-size: 17px;
-    line-height: 1.85;
+    line-height: 1.75;
     color: #374151;
     word-break: break-word;
     overflow-wrap: break-word;
   }
 
   .article-body p {
-    margin-bottom: 1.5rem;
+    margin-bottom: 1.15rem;
     margin-top: 0;
   }
 
