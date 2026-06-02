@@ -122,3 +122,58 @@ export async function uploadImageAction(formData: FormData) {
     const { data: urlData } = supabase.storage.from("media").getPublicUrl(data.path)
     return { url: urlData.publicUrl }
 }
+
+export async function bulkImportAction(jsonString: string) {
+    try {
+        const items = JSON.parse(jsonString)
+        if (!Array.isArray(items)) {
+            return { error: "O JSON deve ser um array." }
+        }
+
+        // Fetch max ID once to start incrementing
+        let currentId = 1
+        const { data: maxIdData } = await supabase.from('posts').select('id').order('id', { ascending: false }).limit(1)
+        if (maxIdData && maxIdData.length > 0) {
+            currentId = maxIdData[0].id
+        }
+
+        let added = 0
+        for (const item of items) {
+            currentId++
+            const baseSlug = slugify(item.title)
+            const timestamp = Date.now() + added
+            const slug = `${baseSlug}-${timestamp}`
+
+            const { error } = await supabase.from('posts').insert([{
+                id: currentId,
+                title: item.title,
+                slug,
+                content: item.content,
+                summary: item.summary,
+                category: item.category || "Notícias",
+                city: item.city || null,
+                image_url: item.image_url || null,
+                tags: item.tags || [],
+                featured: !!item.featured,
+                author: "Redação Portal",
+                date: new Date().toISOString(),
+                views: 0,
+            }])
+
+            if (error) {
+                console.error("Error bulk inserting item:", error, item.title)
+                continue
+            }
+            added++
+        }
+
+        revalidatePath("/")
+        revalidatePath("/noticias")
+        revalidatePath("/admin/noticias")
+        return { success: true, added }
+
+    } catch (err: any) {
+        return { error: "Erro ao processar JSON: " + err.message }
+    }
+}
+

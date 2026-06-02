@@ -28,9 +28,14 @@ export default async function AdminNoticiasPage({
             <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-2">
                 <div className="flex items-center gap-4">
                     <h1 className="text-[23px] text-[#1d2327] font-normal font-sans">Posts</h1>
-                    <Link href="/admin/noticias/nova" className="bg-[#2271b1] text-white px-3 py-1.5 text-[13px] rounded-sm hover:bg-[#135e96] transition-colors">
-                        Adicionar novo
-                    </Link>
+                    <div className="flex items-center gap-2">
+                        <Link href="/admin/noticias/nova" className="bg-[#2271b1] text-white px-3 py-1.5 text-[13px] rounded-sm hover:bg-[#135e96] transition-colors">
+                            Adicionar novo
+                        </Link>
+                        <Link href="/admin/noticias/importar" className="text-[#2271b1] border border-[#2271b1] px-3 py-1.5 text-[13px] rounded-sm hover:bg-blue-50 transition-colors">
+                            Importação Rápida
+                        </Link>
+                    </div>
                 </div>
 
                 <form className="relative flex-1 max-w-sm">

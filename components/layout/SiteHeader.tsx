@@ -7,8 +7,12 @@ import { usePathname } from "next/navigation"
 export function SiteHeader() {
     const pathname = usePathname()
 
+    const isArticlePage = pathname?.startsWith('/noticia/')
+    const bgColor = isArticlePage ? 'bg-brand-blue-primary' : 'bg-white'
+    const borderColor = isArticlePage ? 'border-brand-blue-primary/20' : 'border-gray-100'
+
     return (
-        <section className="w-full bg-white py-3 sm:py-5 md:py-6 border-b border-gray-100">
+        <section className={`w-full ${bgColor} py-3 sm:py-5 md:py-6 border-b ${borderColor} transition-colors duration-300`}>
             <div className="portal-container flex flex-col items-center justify-center text-center">
                 <Link href="/" className="block w-full max-w-[500px]">
                     <div className="relative h-[60px] sm:h-[90px] md:h-[130px] w-full overflow-hidden">
