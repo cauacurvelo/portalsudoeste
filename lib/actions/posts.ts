@@ -1,6 +1,6 @@
 "use server"
 
-import { supabase } from "@/lib/supabase"
+import { supabase, createAdminClient } from "@/lib/supabase"
 import { slugify } from "@/lib/utils"
 import { revalidatePath } from "next/cache"
 import { redirect } from "next/navigation"
@@ -130,21 +130,24 @@ export async function bulkImportAction(jsonString: string) {
             return { error: "O JSON deve ser um array." }
         }
 
+        const admin = createAdminClient()
+
         // Fetch max ID once to start incrementing
         let currentId = 1
-        const { data: maxIdData } = await supabase.from('posts').select('id').order('id', { ascending: false }).limit(1)
+        const { data: maxIdData } = await admin.from('posts').select('id').order('id', { ascending: false }).limit(1)
         if (maxIdData && maxIdData.length > 0) {
             currentId = maxIdData[0].id
         }
 
         let added = 0
+        const errors: string[] = []
         for (const item of items) {
             currentId++
             const baseSlug = slugify(item.title)
             const timestamp = Date.now() + added
             const slug = `${baseSlug}-${timestamp}`
 
-            const { error } = await supabase.from('posts').insert([{
+            const { error } = await admin.from('posts').insert([{
                 id: currentId,
                 title: item.title,
                 slug,
@@ -161,7 +164,8 @@ export async function bulkImportAction(jsonString: string) {
             }])
 
             if (error) {
-                console.error("Error bulk inserting item:", error, item.title)
+                console.error("Error bulk inserting item:", error.message, item.title)
+                errors.push(`"${item.title}": ${error.message}`)
                 continue
             }
             added++
@@ -170,7 +174,12 @@ export async function bulkImportAction(jsonString: string) {
         revalidatePath("/")
         revalidatePath("/noticias")
         revalidatePath("/admin/noticias")
-        return { success: true, added }
+
+        if (errors.length > 0 && added === 0) {
+            return { error: "Nenhuma notícia foi inserida. Erros: " + errors.join(" | ") }
+        }
+
+        return { success: true, added, errors }
 
     } catch (err: any) {
         return { error: "Erro ao processar JSON: " + err.message }
