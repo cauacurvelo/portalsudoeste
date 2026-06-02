@@ -5,7 +5,6 @@ import Link from "next/link"
 import { Facebook, Twitter, MessageCircle, Calendar, Clock, User, ArrowLeft, Tag, Eye } from "lucide-react"
 import { Article, getRelatedArticles } from "@/lib/data/articles-db"
 import { AdSpace } from "@/components/ui/AdSpace"
-import DOMPurify from "isomorphic-dompurify"
 import { NewsletterForm } from "@/components/forms/NewsletterForm"
 import { slugify } from "@/lib/utils"
 
@@ -168,10 +167,10 @@ export async function ArticleDetail({ article }: ArticleDetailProps) {
                             </div>
 
                             {/* Content */}
-                            <div className="px-6 md:px-10 py-8">
+                            <div className="prose prose-lg max-w-none prose-a:text-brand-blue-primary hover:prose-a:text-brand-red prose-img:rounded-sm">
                                 <div
-                                    className="article-body wp-content"
-                                    dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(article.content) }}
+                                    className="article-body wp-content px-6 md:px-10 py-8"
+                                    dangerouslySetInnerHTML={{ __html: article.content || '' }}
                                 />
                             </div>
 
