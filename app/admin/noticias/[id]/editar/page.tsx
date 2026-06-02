@@ -65,6 +65,7 @@ export default function EditArticlePage({ params }: EditPageProps) {
         const city = (formData.get("city") as string)?.trim()
         const tagsRaw = (formData.get("tags") as string)?.trim()
         const featured = formData.get("featured") === "on"
+        const status = formData.get("status") as string
 
         if (!title || !content) {
             setError("Título e conteúdo são obrigatórios.")
@@ -72,12 +73,25 @@ export default function EditArticlePage({ params }: EditPageProps) {
             return
         }
 
+        // Handle status prefixing
+        let finalTitle = title
+        if (status === "draft") {
+            if (!title.startsWith("[RASCUNHO]")) {
+                finalTitle = `[RASCUNHO] ${title}`
+            }
+        } else {
+            // Remove prefix if switching to published
+            if (title.startsWith("[RASCUNHO]")) {
+                finalTitle = title.replace("[RASCUNHO]", "").trim()
+            }
+        }
+
         const tags = tagsRaw ? tagsRaw.split(",").map((t) => t.trim()).filter(Boolean) : []
 
         const { error: updateError } = await supabase
             .from("posts")
             .update({
-                title,
+                title: finalTitle,
                 content,
                 summary,
                 category: category || "Notícias",
@@ -96,6 +110,8 @@ export default function EditArticlePage({ params }: EditPageProps) {
 
         setSuccess(true)
         setLoading(false)
+        // Update local state so UI reflects prefix change if any
+        setArticle((prev: any) => ({ ...prev, title: finalTitle }))
         setTimeout(() => setSuccess(false), 3000)
     }
 
@@ -198,8 +214,19 @@ export default function EditArticlePage({ params }: EditPageProps) {
                             <div className="border-b border-[#c3c4c7] px-3 py-2 bg-[#f6f7f7]">
                                 <h3 className="font-semibold text-[14px] text-[#1d2327]">Publicar</h3>
                             </div>
-                            <div className="p-3 border-b border-[#c3c4c7]">
-                                <div className="flex items-center gap-2 text-[13px]">
+                            <div className="p-3 border-b border-[#c3c4c7] space-y-3">
+                                <div>
+                                    <label className="block text-[13px] font-semibold mb-1">Status</label>
+                                    <select 
+                                        name="status"
+                                        defaultValue={article.title.startsWith("[RASCUNHO]") ? "draft" : "published"}
+                                        className="w-full border border-[#8c8f94] p-1 text-[13px] outline-none rounded-sm bg-white"
+                                    >
+                                        <option value="published">Publicado</option>
+                                        <option value="draft">Rascunho</option>
+                                    </select>
+                                </div>
+                                <div className="flex items-center gap-2 text-[13px] pt-1 border-t border-[#f0f0f1] mt-2 pt-2">
                                     <input
                                         type="checkbox"
                                         name="featured"

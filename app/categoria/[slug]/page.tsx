@@ -3,17 +3,19 @@ import { getArticlesByCategory } from "@/lib/data/articles-db"
 import { ArticleCard } from "@/components/news/ArticleCard"
 import { SITE_CONFIG } from "@/lib/constants"
 
+import { deslugify, slugify } from "@/lib/utils"
+
 interface PageProps {
     params: Promise<{ slug: string }>
 }
 
 export async function generateStaticParams() {
-    return SITE_CONFIG.categories.map((cat) => ({ slug: cat.toLowerCase() }))
+    return SITE_CONFIG.categories.map((cat) => ({ slug: slugify(cat) }))
 }
 
 export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
     const { slug } = await params
-    const categoryName = slug.charAt(0).toUpperCase() + slug.slice(1)
+    const categoryName = SITE_CONFIG.categories.find(c => slugify(c) === slug) || deslugify(slug)
     return {
         title: `${categoryName} | Portal do Sudoeste`,
         description: `Últimas notícias de ${categoryName} no Portal do Sudoeste. Acompanhe tudo sobre ${categoryName} na região Sudoeste da Bahia.`,
@@ -22,9 +24,8 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
 
 export default async function CategoryPage({ params }: PageProps) {
     const { slug } = await params
+    const categoryName = SITE_CONFIG.categories.find(c => slugify(c) === slug) || deslugify(slug)
     const categoryArticles = await getArticlesByCategory(slug)
-
-    const categoryName = slug.charAt(0).toUpperCase() + slug.slice(1);
 
     return (
         <div className="container mx-auto px-4 py-12">

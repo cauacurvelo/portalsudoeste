@@ -57,7 +57,7 @@ export function HeroCarouselClient({ articles }: HeroCarouselProps) {
                                     <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/40 to-transparent" />
                                     <div className="absolute inset-0 hidden sm:block bg-gradient-to-r from-brand-blue-primary/70 via-transparent to-transparent" />
 
-                                    <div className="absolute inset-0 flex flex-col justify-end p-4 sm:p-8 md:p-12 lg:p-16">
+                                    <div className="absolute inset-0 flex flex-col justify-end p-4 sm:p-6 md:p-8 lg:p-12">
                                         <div className="max-w-2xl">
                                             <div className="flex items-center gap-2 mb-3">
                                                 <span className="bg-brand-red text-white text-[8px] sm:text-[9px] font-black uppercase tracking-[0.2em] rounded-full px-3 py-1">

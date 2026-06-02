@@ -11,6 +11,7 @@ import {
 } from "lucide-react"
 import { getLatestArticles, getTotalArticleCount, getPublishedTodayCount, getTopViewsSum } from "@/lib/data/articles-db"
 import Link from "next/link"
+import { QuickDraftForm } from "@/components/admin/QuickDraftForm"
 
 function formatNumber(num: number): string {
     if (num >= 1000000) return (num / 1000000).toFixed(1) + 'M'
@@ -133,19 +134,25 @@ export default async function AdminDashboard() {
                                     </div>
                                     <div className="flex-1 min-w-0">
                                         <Link
-                                            href={`/admin/noticias/${article.slug}`}
+                                            href={`/admin/noticias/${article.id}/editar`}
                                             className="text-[#2271b1] hover:underline text-[13px] font-medium line-clamp-1 block"
                                         >
-                                            {article.title}
+                                            {article.title.startsWith("[RASCUNHO]") 
+                                                ? article.title.replace("[RASCUNHO]", "").trim() 
+                                                : article.title
+                                            }
                                         </Link>
                                         <p className="text-[11px] text-[#a7aaad] mt-0.5">
+                                            {article.title.startsWith("[RASCUNHO]") && (
+                                                <span className="text-gray-500 font-bold uppercase text-[9px] mr-1.5">Rascunho ·</span>
+                                            )}
                                             {new Date(article.date).toLocaleDateString('pt-BR', {
                                                 day: '2-digit', month: 'short', year: 'numeric',
                                                 hour: '2-digit', minute: '2-digit'
                                             })} · {article.category}
                                         </p>
                                     </div>
-                                    <Link href={`/admin/noticias/${article.slug}`} className="text-[#a7aaad] hover:text-[#2271b1] transition-colors shrink-0">
+                                    <Link href={`/admin/noticias/${article.id}/editar`} className="text-[#a7aaad] hover:text-[#2271b1] transition-colors shrink-0">
                                         <Edit3 className="w-3.5 h-3.5" />
                                     </Link>
                                 </div>
@@ -162,26 +169,7 @@ export default async function AdminDashboard() {
 
                     {/* Quick Draft */}
                     <Widget title="Rascunho Rápido">
-                        <form className="space-y-3">
-                            <input
-                                type="text"
-                                placeholder="Título do post"
-                                className="w-full border border-[#8c8f94] px-3 py-2 text-[13px] focus:border-[#2271b1] focus:ring-2 focus:ring-[#2271b1]/20 outline-none rounded-sm bg-[#fafafa]"
-                            />
-                            <textarea
-                                placeholder="No que você está pensando?"
-                                rows={4}
-                                className="w-full border border-[#8c8f94] px-3 py-2 text-[13px] focus:border-[#2271b1] focus:ring-2 focus:ring-[#2271b1]/20 outline-none resize-none rounded-sm bg-[#fafafa]"
-                            />
-                            <div className="flex gap-2">
-                                <button
-                                    type="button"
-                                    className="bg-[#2271b1] text-white px-4 py-1.5 text-[13px] rounded-sm hover:bg-[#135e96] transition-colors"
-                                >
-                                    Salvar rascunho
-                                </button>
-                            </div>
-                        </form>
+                        <QuickDraftForm />
                     </Widget>
 
                     {/* Em Relance */}

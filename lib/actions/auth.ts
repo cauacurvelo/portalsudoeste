@@ -8,8 +8,13 @@ export async function loginAction(formData: FormData) {
     const password = formData.get("password") as string
 
     // In production, validate against a real database
-    const validUsername = process.env.ADMIN_USERNAME || "editor"
-    const validPassword = process.env.ADMIN_PASSWORD || "Portal@2026!"
+    const validUsername = process.env.ADMIN_USERNAME
+    const validPassword = process.env.ADMIN_PASSWORD
+
+    if (!validUsername || !validPassword) {
+        console.error("ADMIN_USERNAME or ADMIN_PASSWORD environment variables are not set.")
+        return { error: "Erro de configuração do sistema. Contacte o administrador." }
+    }
 
     if (username === validUsername && password === validPassword) {
         const cookieStore = await cookies()

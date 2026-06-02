@@ -25,13 +25,20 @@ export async function createPostAction(formData: FormData) {
     const imageUrl = (formData.get("image_url") as string)?.trim()
     const tagsRaw = (formData.get("tags") as string)?.trim()
     const featured = formData.get("featured") === "on"
+    const status = formData.get("status") as string
 
     if (!title || !content) {
         return { error: "Título e conteúdo são obrigatórios." }
     }
 
+    // Handle Draft Status
+    let finalTitle = title
+    if (status === "draft" && !title.startsWith("[RASCUNHO]")) {
+        finalTitle = `[RASCUNHO] ${title}`
+    }
+
     // Generate unique slug
-    const baseSlug = slugify(title)
+    const baseSlug = slugify(finalTitle)
     const timestamp = Date.now()
     const slug = `${baseSlug}-${timestamp}`
 
@@ -42,7 +49,7 @@ export async function createPostAction(formData: FormData) {
     const { data, error } = await supabase
         .from("posts")
         .insert([{
-            title,
+            title: finalTitle,
             slug,
             content,
             summary,

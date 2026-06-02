@@ -1,9 +1,17 @@
 import { NextRequest, NextResponse } from "next/server"
 import { createAdminClient } from "@/lib/supabase"
+import { cookies } from "next/headers"
 
 export const runtime = "nodejs"
 
 export async function POST(req: NextRequest) {
+    // PROTECT ROUTE: Only logged-in admins can upload via this API
+    const cookieStore = await cookies()
+    const session = cookieStore.get("admin_session")
+    if (!session || session.value !== "authenticated") {
+        return NextResponse.json({ error: "Não autorizado." }, { status: 401 })
+    }
+
     try {
         const formData = await req.formData()
         const file = formData.get("file") as File | null

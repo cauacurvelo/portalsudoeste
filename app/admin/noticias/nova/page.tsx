@@ -137,7 +137,17 @@ export default function NewArticlePage() {
                                 <ChevronUp className="w-4 h-4 text-[#a7aaad]" />
                             </div>
                             <div className="p-3 border-b border-[#c3c4c7] space-y-3 text-[13px] text-[#3c434a]">
-                                <div className="flex items-center gap-2 pt-1">
+                                <div>
+                                    <label className="block font-semibold mb-1">Status</label>
+                                    <select 
+                                        name="status"
+                                        className="w-full border border-[#8c8f94] p-1 focus:border-[#2271b1] outline-none rounded-sm bg-white"
+                                    >
+                                        <option value="published">Publicado</option>
+                                        <option value="draft">Rascunho</option>
+                                    </select>
+                                </div>
+                                <div className="flex items-center gap-2 pt-1 border-t border-[#f0f0f1] mt-2 pt-2">
                                     <input type="checkbox" name="featured" id="featured" className="border-[#8c8f94] w-4 h-4" />
                                     <label htmlFor="featured" className="font-semibold cursor-pointer">Destaque na página inicial</label>
                                 </div>

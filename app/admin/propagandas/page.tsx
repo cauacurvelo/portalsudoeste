@@ -2,7 +2,8 @@
 
 import { useState, useEffect } from "react"
 import { supabase } from "@/lib/supabase"
-import { Ad, getAllAds, createAd, deleteAd, toggleAdStatus } from "@/lib/data/ads-db"
+import { Ad, getAllAds } from "@/lib/data/ads-db"
+import { toggleAdAction, deleteAdAction, createAdAction } from "@/lib/actions/ads"
 import { Plus, Trash2, Power, PowerOff, Image as ImageIcon } from "lucide-react"
 
 export default function AdminPropagandasPage() {
@@ -49,14 +50,16 @@ export default function AdminPropagandasPage() {
                 .from('media')
                 .getPublicUrl(fileName)
 
-            // Criar no banco
-            await createAd({
+            // Criar no banco via Server Action
+            const res = await createAdAction({
                 title,
                 link_url: linkUrl,
                 image_url: publicUrlData.publicUrl,
                 position,
                 active: true
             })
+            
+            if (res.error) throw new Error(res.error)
 
             // Reset form
             setTitle("")
@@ -72,14 +75,26 @@ export default function AdminPropagandasPage() {
     }
 
     async function handleToggle(id: string, current: boolean) {
-        await toggleAdStatus(id, current)
-        loadAds()
+        try {
+            const res = await toggleAdAction(id, current)
+            if (res.error) throw new Error(res.error)
+            loadAds()
+        } catch (error: any) {
+            console.error("Erro ao alterar status:", error)
+            alert("Erro ao alterar status: " + error.message)
+        }
     }
 
     async function handleDelete(id: string) {
         if (!confirm("Tem certeza que deseja deletar esta propaganda?")) return
-        await deleteAd(id)
-        loadAds()
+        try {
+            const res = await deleteAdAction(id)
+            if (res.error) throw new Error(res.error)
+            loadAds()
+        } catch (error: any) {
+            console.error("Erro ao deletar:", error)
+            alert("Erro ao deletar propaganda.")
+        }
     }
 
     return (

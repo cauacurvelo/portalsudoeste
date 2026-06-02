@@ -218,8 +218,9 @@
   }
 
   .article-body p {
-    margin-bottom: 1.15rem;
+    margin-bottom: 1.8rem;
     margin-top: 0;
+    line-height: 1.85;
   }
 
   .article-body p + p {

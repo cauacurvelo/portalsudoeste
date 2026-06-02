@@ -42,7 +42,7 @@ const menuGroups = [
             { title: "Mídia", icon: ImageIcon, href: "/admin/midia" },
             { title: "Propagandas", icon: ImageIcon, href: "/admin/propagandas" },
             { title: "Páginas", icon: FileText, href: "/admin/paginas" },
-            { title: "Comentários", icon: MessageSquare, href: "/admin/comentarios" },
+            { title: "Mensagens", icon: MessageSquare, href: "/admin/mensagens" },
         ]
     },
     {

@@ -43,6 +43,7 @@ export const getLatestArticles = cache(async (limit = 6): Promise<Article[]> => 
     const { data, error } = await supabase
         .from('posts')
         .select('*')
+        .not('title', 'ilike', '[RASCUNHO]%')
         .order('date', { ascending: false })
         .limit(limit)
 
@@ -55,6 +56,7 @@ export const getFeaturedArticles = cache(async (limit = 5): Promise<Article[]> =
     const { data, error } = await supabase
         .from('posts')
         .select('*')
+        .not('title', 'ilike', '[RASCUNHO]%')
         .not('image_url', 'is', null)
         .neq('image_url', '')
         .order('date', { ascending: false })
@@ -68,6 +70,7 @@ export const getMostReadArticles = cache(async (limit = 5): Promise<Article[]> =
     const { data, error } = await supabase
         .from('posts')
         .select('*')
+        .not('title', 'ilike', '[RASCUNHO]%')
         .order('views', { ascending: false })
         .limit(limit)
 
@@ -157,13 +160,11 @@ export async function getPublishedTodayCount(): Promise<number> {
 }
 
 export async function getTopViewsSum(): Promise<number> {
-    const { data } = await supabase
+    const { data, error } = await supabase
         .from('posts')
         .select('views')
-        .order('views', { ascending: false })
-        .limit(100)
     
-    if (!data) return 0
+    if (error || !data) return 0
     return data.reduce((acc, curr) => acc + (curr.views || 0), 0)
 }
 
@@ -178,6 +179,43 @@ export const getArticlesWithVideo = cache(async (limit = 4): Promise<Article[]> 
     if (error || !data) return []
     return data.map(toArticle)
 })
+
+// ─── Query para Administração (com busca e paginação) ─────────────────────────
+export async function getAdminArticles({
+    query = '',
+    page = 1,
+    limit = 20,
+    category = ''
+}: {
+    query?: string
+    page?: number
+    limit?: number
+    category?: string
+}) {
+    let supabaseQuery = supabase
+        .from('posts')
+        .select('*', { count: 'exact' })
+        .order('date', { ascending: false })
+
+    if (query) {
+        supabaseQuery = supabaseQuery.or(`title.ilike.%${query}%,content.ilike.%${query}%`)
+    }
+
+    if (category) {
+        supabaseQuery = supabaseQuery.eq('category', category)
+    }
+
+    const from = (page - 1) * limit
+    const to = from + limit - 1
+
+    const { data, count, error } = await supabaseQuery.range(from, to)
+
+    return {
+        articles: (data || []).map(toArticle),
+        total: count || 0,
+        error
+    }
+}
 
 // ─── Incrementar visualizações ────────────────────────────────────────────────
 export async function incrementViews(id: string) {

@@ -22,7 +22,7 @@ export function NewsTickerClient({ articles }: NewsTickerClientProps) {
                 <div className="flex items-center gap-1.5 bg-brand-blue-primary text-white text-[9px] sm:text-[10px] font-black tracking-[0.1em] px-3 h-full shrink-0 z-10 relative">
                     <TrendingUp className="w-3 h-3 shrink-0" />
                     <span className="whitespace-nowrap">PLANTÃO</span>
-                    <svg className="absolute right-[-9px] top-0 h-full w-[10px] fill-brand-blue-primary" viewBox="0 0 10 36" preserveAspectRatio="none">
+                    <svg className="absolute right-[-10px] top-0 h-full w-[11px] fill-brand-blue-primary" viewBox="0 0 10 36" preserveAspectRatio="none">
                         <polygon points="0,0 10,18 0,36" />
                     </svg>
                 </div>

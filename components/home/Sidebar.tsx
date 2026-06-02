@@ -21,7 +21,7 @@ export async function Sidebar() {
                 <p className="text-[9px] font-black uppercase tracking-[0.3em] text-brand-red mb-1">Fique por Dentro</p>
                 <h3 className="text-base font-serif font-black text-white mb-1">Receba no E-mail</h3>
                 <p className="text-xs text-white/50 mb-4 font-medium leading-relaxed">As notícias mais importantes do Sudoeste Baiano direto para você.</p>
-                <NewsletterForm />
+                <NewsletterForm variant="sidebar" />
             </div>
 
             {/* Most Read / Latest Tabs */}

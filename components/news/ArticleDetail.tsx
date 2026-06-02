@@ -5,6 +5,8 @@ import Link from "next/link"
 import { Facebook, Twitter, MessageCircle, Calendar, Clock, User, ArrowLeft, Tag, Eye } from "lucide-react"
 import { Article, getRelatedArticles } from "@/lib/data/articles-db"
 import { AdSpace } from "@/components/ui/AdSpace"
+import DOMPurify from "isomorphic-dompurify"
+import { NewsletterForm } from "@/components/forms/NewsletterForm"
 import { slugify } from "@/lib/utils"
 
 interface ArticleDetailProps {
@@ -169,7 +171,7 @@ export async function ArticleDetail({ article }: ArticleDetailProps) {
                             <div className="px-6 md:px-10 py-8">
                                 <div
                                     className="article-body wp-content"
-                                    dangerouslySetInnerHTML={{ __html: article.content }}
+                                    dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(article.content) }}
                                 />
                             </div>
 
@@ -252,14 +254,7 @@ export async function ArticleDetail({ article }: ArticleDetailProps) {
                                 <p className="text-[9px] font-black uppercase tracking-[0.3em] text-brand-red mb-1">Fique por dentro</p>
                                 <h3 className="font-serif font-black text-xl mb-2">Receba no E-mail</h3>
                                 <p className="text-xs text-white/50 mb-4 leading-relaxed">As notícias mais importantes do Sudoeste Baiano direto para você.</p>
-                                <input
-                                    type="email"
-                                    placeholder="Seu melhor e-mail"
-                                    className="w-full bg-white/10 border border-white/20 rounded px-4 py-2.5 text-sm text-white placeholder:text-white/30 focus:outline-none focus:bg-white/20 mb-3"
-                                />
-                                <button className="w-full bg-brand-red hover:bg-red-700 text-white font-bold text-[11px] uppercase tracking-widest py-2.5 rounded transition-colors">
-                                    Assinar Grátis
-                                </button>
+                                <NewsletterForm variant="sidebar" />
                             </div>
 
                             {/* Most recent */}

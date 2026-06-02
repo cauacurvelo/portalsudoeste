@@ -40,6 +40,8 @@ export const metadata: Metadata = {
   },
 };
 
+import { AdminBar } from "@/components/admin/AdminBar";
+
 export default function RootLayout({
   children,
 }: Readonly<{
@@ -48,6 +50,7 @@ export default function RootLayout({
   return (
     <html lang="pt-BR" suppressHydrationWarning>
       <body suppressHydrationWarning className={`${sourceSans.variable} ${playfair.variable} ${sourceSerif.variable} font-sans antialiased text-brand-blue-primary flex flex-col min-h-screen`}>
+        <AdminBar />
         <ThemeProvider
           attribute="class"
           defaultTheme="light"

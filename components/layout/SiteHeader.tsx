@@ -7,10 +7,6 @@ import { usePathname } from "next/navigation"
 export function SiteHeader() {
     const pathname = usePathname()
 
-    if (pathname !== "/") {
-        return null
-    }
-
     return (
         <section className="w-full bg-white py-3 sm:py-5 md:py-6 border-b border-gray-100">
             <div className="portal-container flex flex-col items-center justify-center text-center">
