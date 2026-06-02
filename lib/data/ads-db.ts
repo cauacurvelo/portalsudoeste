@@ -1,6 +1,5 @@
 import { supabase } from '@/lib/supabase'
 import { cache } from 'react'
-import { unstable_noStore as noStore } from 'next/cache'
 
 export interface Ad {
     id: string
@@ -13,7 +12,6 @@ export interface Ad {
 }
 
 export const getActiveAds = cache(async (): Promise<Ad[]> => {
-    noStore(); // Prevents Next.js from caching this query statically
     try {
         const { data, error } = await supabase
             .from('ads')
