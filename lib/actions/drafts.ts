@@ -1,10 +1,11 @@
 "use server"
 
-import { supabase } from "@/lib/supabase"
+import { createAdminClient } from "@/lib/supabase"
 import { slugify } from "@/lib/utils"
 import { revalidatePath } from "next/cache"
 
 export async function quickDraftAction(formData: FormData) {
+    const admin = createAdminClient()
     const title = (formData.get("title") as string)?.trim()
     const content = (formData.get("content") as string)?.trim()
 
@@ -19,12 +20,12 @@ export async function quickDraftAction(formData: FormData) {
 
     // Fetch next ID
     let nextId = 1
-    const { data: maxIdData } = await supabase.from('posts').select('id').order('id', { ascending: false }).limit(1)
+    const { data: maxIdData } = await admin.from('posts').select('id').order('id', { ascending: false }).limit(1)
     if (maxIdData && maxIdData.length > 0) {
         nextId = maxIdData[0].id + 1
     }
 
-    const { error } = await supabase
+    const { error } = await admin
         .from("posts")
         .insert([{
             id: nextId,
@@ -41,7 +42,7 @@ export async function quickDraftAction(formData: FormData) {
 
     if (error) {
         console.error("Error creating quick draft:", error)
-        return { error: "Erro ao salvar rascunho." }
+        return { error: "Erro ao salvar rascunho: " + error.message }
     }
 
     revalidatePath("/admin")

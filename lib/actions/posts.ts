@@ -17,6 +17,7 @@ export interface CreatePostData {
 }
 
 export async function createPostAction(formData: FormData) {
+    const admin = createAdminClient()
     const title = (formData.get("title") as string)?.trim()
     const content = (formData.get("content") as string)?.trim()
     const summary = (formData.get("summary") as string)?.trim()
@@ -48,12 +49,12 @@ export async function createPostAction(formData: FormData) {
 
     // Query highest current ID to manually increment
     let nextId = 1
-    const { data: maxIdData } = await supabase.from('posts').select('id').order('id', { ascending: false }).limit(1)
+    const { data: maxIdData } = await admin.from('posts').select('id').order('id', { ascending: false }).limit(1)
     if (maxIdData && maxIdData.length > 0) {
         nextId = maxIdData[0].id + 1
     }
 
-    const { data, error } = await supabase
+    const { data, error } = await admin
         .from("posts")
         .insert([{
             id: nextId,
@@ -86,7 +87,8 @@ export async function createPostAction(formData: FormData) {
 }
 
 export async function deletePostAction(id: string) {
-    const { error } = await supabase
+    const admin = createAdminClient()
+    const { error } = await admin
         .from("posts")
         .delete()
         .eq("id", parseInt(id))
@@ -97,6 +99,36 @@ export async function deletePostAction(id: string) {
 
     revalidatePath("/")
     revalidatePath("/noticias")
+    revalidatePath("/admin/noticias")
+
+    return { success: true }
+}
+
+export async function updatePostAction(id: number, data: {
+    title: string
+    content: string
+    summary: string
+    category: string
+    city: string | null
+    image_url: string | null
+    tags: string[]
+    featured: boolean
+}) {
+    const admin = createAdminClient()
+
+    const { error } = await admin
+        .from("posts")
+        .update(data)
+        .eq("id", id)
+
+    if (error) {
+        console.error("Error updating post:", error)
+        return { error: "Erro ao salvar: " + error.message }
+    }
+
+    revalidatePath("/")
+    revalidatePath("/noticias")
+    revalidatePath(`/noticia`)
     revalidatePath("/admin/noticias")
 
     return { success: true }

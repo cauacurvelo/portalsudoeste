@@ -4,6 +4,7 @@ import * as React from "react"
 import { useRouter } from "next/navigation"
 import { ChevronUp, ImageIcon, X, AlertCircle, Loader2, CheckCircle } from "lucide-react"
 import { SITE_CONFIG } from "@/lib/constants"
+import { updatePostAction } from "@/lib/actions/posts"
 import { supabase } from "@/lib/supabase"
 import { use } from "react"
 
@@ -88,29 +89,25 @@ export default function EditArticlePage({ params }: EditPageProps) {
 
         const tags = tagsRaw ? tagsRaw.split(",").map((t) => t.trim()).filter(Boolean) : []
 
-        const { error: updateError } = await supabase
-            .from("posts")
-            .update({
-                title: finalTitle,
-                content,
-                summary,
-                category: category || "Notícias",
-                city: city || null,
-                image_url: imageUrl || null,
-                tags,
-                featured,
-            })
-            .eq("id", parseInt(id))
+        const res = await updatePostAction(parseInt(id), {
+            title: finalTitle,
+            content,
+            summary,
+            category: category || "Notícias",
+            city: city || null,
+            image_url: imageUrl || null,
+            tags,
+            featured,
+        })
 
-        if (updateError) {
-            setError("Erro ao salvar: " + updateError.message)
+        if (res.error) {
+            setError(res.error)
             setLoading(false)
             return
         }
 
         setSuccess(true)
         setLoading(false)
-        // Update local state so UI reflects prefix change if any
         setArticle((prev: any) => ({ ...prev, title: finalTitle }))
         setTimeout(() => setSuccess(false), 3000)
     }
