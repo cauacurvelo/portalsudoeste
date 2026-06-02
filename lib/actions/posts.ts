@@ -46,9 +46,17 @@ export async function createPostAction(formData: FormData) {
         ? tagsRaw.split(",").map((t) => t.trim()).filter(Boolean)
         : []
 
+    // Query highest current ID to manually increment
+    let nextId = 1
+    const { data: maxIdData } = await supabase.from('posts').select('id').order('id', { ascending: false }).limit(1)
+    if (maxIdData && maxIdData.length > 0) {
+        nextId = maxIdData[0].id + 1
+    }
+
     const { data, error } = await supabase
         .from("posts")
         .insert([{
+            id: nextId,
             title: finalTitle,
             slug,
             content,

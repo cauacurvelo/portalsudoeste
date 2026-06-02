@@ -17,9 +17,17 @@ export async function quickDraftAction(formData: FormData) {
     const timestamp = Date.now()
     const slug = `${baseSlug}-${timestamp}`
 
+    // Fetch next ID
+    let nextId = 1
+    const { data: maxIdData } = await supabase.from('posts').select('id').order('id', { ascending: false }).limit(1)
+    if (maxIdData && maxIdData.length > 0) {
+        nextId = maxIdData[0].id + 1
+    }
+
     const { error } = await supabase
         .from("posts")
         .insert([{
+            id: nextId,
             title: `[RASCUNHO] ${title}`,
             slug,
             content: content || "Rascunho rápido sem conteúdo ainda.",
