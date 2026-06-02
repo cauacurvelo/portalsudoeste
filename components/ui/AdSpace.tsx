@@ -28,7 +28,7 @@ export async function AdSpace({ label = "Espaço Publicitário", width, height, 
           <img 
             src={currentAd.image_url} 
             alt={currentAd.title} 
-            className={`w-full object-contain ${position === 'topo' ? 'max-h-[400px]' : 'max-h-[250px]'}`}
+            className={`w-auto max-w-full object-contain ${position === 'topo' ? 'max-h-[400px]' : 'max-h-[250px]'}`}
           />
         </div>
         
