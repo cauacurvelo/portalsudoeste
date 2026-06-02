@@ -59,7 +59,7 @@ export default function AdminImportPage() {
                 </pre>
 
                 {message && (
-                    <div className={\`p-4 mb-6 rounded-sm text-sm \${message.startsWith("✅") ? "bg-green-50 text-green-700 border border-green-200" : "bg-red-50 text-red-700 border border-red-200"}\`}>
+                    <div className={message.startsWith("✅") ? "p-4 mb-6 rounded-sm text-sm bg-green-50 text-green-700 border border-green-200" : "p-4 mb-6 rounded-sm text-sm bg-red-50 text-red-700 border border-red-200"}>
                         {message}
                     </div>
                 )}
