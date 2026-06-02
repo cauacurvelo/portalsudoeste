@@ -35,6 +35,10 @@ const nextConfig: NextConfig = {
         protocol: 'https',
         hostname: 'i.s3.glbimg.com',
       },
+      {
+        protocol: 'https',
+        hostname: 'images.unsplash.com',
+      },
     ],
   },
 };
