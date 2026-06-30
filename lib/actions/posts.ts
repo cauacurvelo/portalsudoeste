@@ -113,6 +113,7 @@ export async function updatePostAction(id: number, data: {
     image_url: string | null
     tags: string[]
     featured: boolean
+    date?: string
 }) {
     const admin = createAdminClient()
 

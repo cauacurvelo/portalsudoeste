@@ -8,6 +8,18 @@ import { updatePostAction } from "@/lib/actions/posts"
 import { supabase } from "@/lib/supabase"
 import { use } from "react"
 
+function formatForDateTimeLocal(dateStr: string) {
+    if (!dateStr) return ""
+    try {
+        const d = new Date(dateStr)
+        if (isNaN(d.getTime())) return ""
+        const pad = (n: number) => String(n).padStart(2, '0')
+        return `${d.getFullYear()}-${pad(d.getMonth() + 1)}-${pad(d.getDate())}T${pad(d.getHours())}:${pad(d.getMinutes())}`
+    } catch {
+        return ""
+    }
+}
+
 interface EditPageProps {
     params: Promise<{ id: string }>
 }
@@ -67,6 +79,7 @@ export default function EditArticlePage({ params }: EditPageProps) {
         const tagsRaw = (formData.get("tags") as string)?.trim()
         const featured = formData.get("featured") === "on"
         const status = formData.get("status") as string
+        const dateRaw = formData.get("date") as string
 
         if (!title || !content) {
             setError("Título e conteúdo são obrigatórios.")
@@ -88,6 +101,7 @@ export default function EditArticlePage({ params }: EditPageProps) {
         }
 
         const tags = tagsRaw ? tagsRaw.split(",").map((t) => t.trim()).filter(Boolean) : []
+        const date = dateRaw ? new Date(dateRaw).toISOString() : new Date().toISOString()
 
         const res = await updatePostAction(parseInt(id), {
             title: finalTitle,
@@ -98,6 +112,7 @@ export default function EditArticlePage({ params }: EditPageProps) {
             image_url: imageUrl || null,
             tags,
             featured,
+            date,
         })
 
         if (res.error) {
@@ -222,6 +237,15 @@ export default function EditArticlePage({ params }: EditPageProps) {
                                         <option value="published">Publicado</option>
                                         <option value="draft">Rascunho</option>
                                     </select>
+                                </div>
+                                <div>
+                                    <label className="block text-[13px] font-semibold mb-1">Data de Publicação</label>
+                                    <input 
+                                        type="datetime-local"
+                                        name="date"
+                                        defaultValue={formatForDateTimeLocal(article.date || new Date().toISOString())}
+                                        className="w-full border border-[#8c8f94] p-1 text-[13px] outline-none rounded-sm bg-white"
+                                    />
                                 </div>
                                 <div className="flex items-center gap-2 text-[13px] pt-1 border-t border-[#f0f0f1] mt-2 pt-2">
                                     <input
