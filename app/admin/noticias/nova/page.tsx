@@ -19,6 +19,12 @@ export default function NewArticlePage() {
         const file = e.target.files?.[0]
         if (!file) return
 
+        const MAX_SIZE = 4 * 1024 * 1024 // 4MB
+        if (file.size > MAX_SIZE) {
+            alert("A imagem selecionada é maior que 4MB. Por favor, utilize uma imagem menor ou comprima-a antes de enviar para evitar limitações do servidor.")
+            return
+        }
+
         setImageUploading(true)
         const fd = new FormData()
         fd.append("file", file)
@@ -32,7 +38,7 @@ export default function NewArticlePage() {
                 alert("Erro no upload: " + (json.error || "desconhecido"))
             }
         } catch {
-            alert("Erro ao conectar com o servidor de upload.")
+            alert("Erro ao conectar com o servidor de upload. A imagem pode ser grande demais para o servidor.")
         } finally {
             setImageUploading(false)
         }

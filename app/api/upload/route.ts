@@ -25,9 +25,9 @@ export async function POST(req: NextRequest) {
             return NextResponse.json({ error: "Tipo de arquivo não permitido. Use JPG, PNG, WebP ou GIF." }, { status: 400 })
         }
 
-        const MAX_SIZE = 10 * 1024 * 1024 // 10MB
+        const MAX_SIZE = 4 * 1024 * 1024 // 4MB (Vercel payload limit)
         if (file.size > MAX_SIZE) {
-            return NextResponse.json({ error: "Arquivo muito grande. Máximo 10MB." }, { status: 400 })
+            return NextResponse.json({ error: "Arquivo muito grande. Limite máximo é de 4MB para evitar limitações do servidor." }, { status: 400 })
         }
 
         const ext = file.name.split(".").pop()?.toLowerCase() || "jpg"
