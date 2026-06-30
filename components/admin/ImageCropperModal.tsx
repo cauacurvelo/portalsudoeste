@@ -12,12 +12,14 @@ export function ImageCropperModal({ imageSrc, onCrop, onClose }: ImageCropperMod
   const [offset, setOffset] = useState({ x: 0, y: 0 });
   const [isDragging, setIsDragging] = useState(false);
   const [dragStart, setDragStart] = useState({ x: 0, y: 0 });
+  const [naturalSize, setNaturalSize] = useState({ width: 0, height: 0 });
   const containerRef = useRef<HTMLDivElement>(null);
   const imgRef = useRef<HTMLImageElement>(null);
 
   useEffect(() => {
     setZoom(1);
     setOffset({ x: 0, y: 0 });
+    setNaturalSize({ width: 0, height: 0 });
   }, [imageSrc]);
 
   const handlePointerDown = (e: React.PointerEvent) => {
@@ -38,6 +40,11 @@ export function ImageCropperModal({ imageSrc, onCrop, onClose }: ImageCropperMod
 
   const handlePointerUp = () => {
     setIsDragging(false);
+  };
+
+  const handleImageLoad = (e: React.SyntheticEvent<HTMLImageElement>) => {
+    const { naturalWidth, naturalHeight } = e.currentTarget;
+    setNaturalSize({ width: naturalWidth, height: naturalHeight });
   };
 
   const handleSave = () => {
@@ -96,6 +103,9 @@ export function ImageCropperModal({ imageSrc, onCrop, onClose }: ImageCropperMod
     );
   };
 
+  const imgRatio = naturalSize.width / (naturalSize.height || 1);
+  const isWider = imgRatio > (16 / 9);
+
   return (
     <div className="fixed inset-0 z-[9999] bg-black/70 flex items-center justify-center p-4">
       <div className="bg-white rounded-md shadow-xl w-full max-w-2xl overflow-hidden flex flex-col">
@@ -119,12 +129,16 @@ export function ImageCropperModal({ imageSrc, onCrop, onClose }: ImageCropperMod
               ref={imgRef}
               src={imageSrc}
               alt="Crop"
-              className="pointer-events-none select-none max-w-none absolute origin-center"
+              onLoad={handleImageLoad}
+              className="pointer-events-none select-none max-w-none absolute"
               style={{
-                width: '100%',
-                height: '100%',
-                objectFit: 'cover',
-                transform: `translate(${offset.x}px, ${offset.y}px) scale(${zoom})`,
+                left: '50%',
+                top: '50%',
+                width: naturalSize.width ? (isWider ? 'auto' : '100%') : '100%',
+                height: naturalSize.height ? (isWider ? '100%' : 'auto') : '100%',
+                maxWidth: 'none',
+                maxHeight: 'none',
+                transform: `translate(-50%, -50%) translate(${offset.x}px, ${offset.y}px) scale(${zoom})`,
               }}
             />
             {/* Overlay grid lines */}
