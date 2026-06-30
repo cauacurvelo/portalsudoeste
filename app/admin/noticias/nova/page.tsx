@@ -5,6 +5,7 @@ import { useRouter } from "next/navigation"
 import { ChevronUp, ImageIcon, X, CheckCircle, AlertCircle, Loader2 } from "lucide-react"
 import { SITE_CONFIG } from "@/lib/constants"
 import { createPostAction } from "@/lib/actions/posts"
+import { ImageCropperModal } from "@/components/admin/ImageCropperModal"
 
 export default function NewArticlePage() {
     const router = useRouter()
@@ -13,21 +14,40 @@ export default function NewArticlePage() {
     const [imageUploading, setImageUploading] = React.useState(false)
     const [error, setError] = React.useState<string | null>(null)
     const [success, setSuccess] = React.useState(false)
+    const [cropperSrc, setCropperSrc] = React.useState<string | null>(null)
+    const [selectedFileName, setSelectedFileName] = React.useState<string>("")
     const formRef = React.useRef<HTMLFormElement>(null)
 
-    async function handleImageUpload(e: React.ChangeEvent<HTMLInputElement>) {
+    async function handleImageSelect(e: React.ChangeEvent<HTMLInputElement>) {
         const file = e.target.files?.[0]
         if (!file) return
 
-        const MAX_SIZE = 4 * 1024 * 1024 // 4MB
+        const MAX_SIZE = 10 * 1024 * 1024 // Allow up to 10MB raw image for cropping client-side
         if (file.size > MAX_SIZE) {
-            alert("A imagem selecionada é maior que 4MB. Por favor, utilize uma imagem menor ou comprima-a antes de enviar para evitar limitações do servidor.")
+            alert("A imagem selecionada é muito grande (máximo 10MB).")
             return
         }
 
+        setSelectedFileName(file.name)
+        const objectUrl = URL.createObjectURL(file)
+        setCropperSrc(objectUrl)
+    }
+
+    async function handleCroppedImage(blob: Blob) {
+        setCropperSrc(null)
         setImageUploading(true)
+
+        const croppedFile = new File([blob], selectedFileName || "imagem.jpg", { type: "image/jpeg" })
+
+        // Check if cropped size fits (should be under 4MB)
+        if (croppedFile.size > 4 * 1024 * 1024) {
+            alert("O arquivo cortado excedeu 4MB. Tente diminuir o zoom ou use outra imagem.")
+            setImageUploading(false)
+            return
+        }
+
         const fd = new FormData()
-        fd.append("file", file)
+        fd.append("file", croppedFile)
 
         try {
             const res = await fetch("/api/upload", { method: "POST", body: fd })
@@ -244,7 +264,7 @@ export default function NewArticlePage() {
                                             type="file"
                                             accept="image/*"
                                             className="hidden"
-                                            onChange={handleImageUpload}
+                                            onChange={handleImageSelect}
                                             disabled={imageUploading}
                                         />
                                     </label>
@@ -265,6 +285,14 @@ export default function NewArticlePage() {
                     </div>
                 </div>
             </form>
+
+            {cropperSrc && (
+                <ImageCropperModal
+                    imageSrc={cropperSrc}
+                    onClose={() => setCropperSrc(null)}
+                    onCrop={handleCroppedImage}
+                />
+            )}
         </div>
     )
 }
