@@ -19,13 +19,22 @@ export async function POST(req: Request) {
         // Expected fields from a service like Make.com/Zapier
         const { title, caption, media_url, permalink, timestamp } = body
 
-        if (!caption && !title) {
-            return NextResponse.json({ success: false, error: "No content provided" }, { status: 400 })
+        if (!caption) {
+            return NextResponse.json({ success: false, error: "No caption provided" }, { status: 400 })
         }
+
+        // 1. Check if it contains the hashtag #noticia or #notícia (case-insensitive)
+        const hashtagRegex = /#not[ií]cia\b/i
+        if (!hashtagRegex.test(caption)) {
+            return NextResponse.json({ success: true, message: "Post ignored: does not contain #noticia" })
+        }
+
+        // 2. Clean the caption by removing the hashtag
+        const cleanedCaption = caption.replace(hashtagRegex, "").trim()
 
         const supabase = createAdminClient()
 
-        // 1. Download image from Instagram and upload to our own bucket to avoid expiry
+        // 3. Download image from Instagram and upload to our own bucket to avoid expiry
         let finalImageUrl = media_url
         if (media_url && media_url.startsWith('http')) {
             try {
@@ -46,18 +55,27 @@ export async function POST(req: Request) {
             }
         }
 
-        // 2. Generate title from caption if not provided
-        const postTitle = title || caption.split('\n')[0].substring(0, 100) || "Post do Instagram"
+        // 4. Generate title and slug from the cleaned caption
+        const firstLine = cleanedCaption.split('\n')[0].trim()
+        const postTitle = title || (firstLine.length > 100 ? firstLine.substring(0, 100) + "..." : firstLine) || "Post do Instagram"
         const postSlug = `${slugify(postTitle)}-${Date.now()}`
 
-        // 3. Create post in database
+        // 5. Query highest current ID to manually increment (required by posts table schema)
+        let nextId = 1
+        const { data: maxIdData } = await supabase.from('posts').select('id').order('id', { ascending: false }).limit(1)
+        if (maxIdData && maxIdData.length > 0) {
+            nextId = maxIdData[0].id + 1
+        }
+
+        // 6. Create post in database
         const { data, error } = await supabase
             .from('posts')
             .insert([{
+                id: nextId,
                 title: postTitle,
                 slug: postSlug,
-                content: caption.replace(/\n/g, '<br>'),
-                summary: caption.substring(0, 160) + "...",
+                content: cleanedCaption.replace(/\n/g, '<br>'),
+                summary: cleanedCaption.substring(0, 160) + (cleanedCaption.length > 160 ? "..." : ""),
                 image_url: finalImageUrl,
                 category: "Instagram",
                 author: "Instagram Sync",
@@ -69,8 +87,9 @@ export async function POST(req: Request) {
 
         if (error) throw error
 
-        // 4. Revalidate frontend
+        // 7. Revalidate frontend
         revalidatePath('/')
+        revalidatePath('/noticias')
         revalidatePath('/categoria/instagram')
 
         return NextResponse.json({ 
