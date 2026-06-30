@@ -7,7 +7,7 @@ export const runtime = "nodejs"
 export async function POST(req: NextRequest) {
     // PROTECT ROUTE: Only logged-in admins can upload via this API
     const cookieStore = await cookies()
-    const session = cookieStore.get("admin_session")
+    const session = cookieStore.get("admin-auth")
     if (!session || session.value !== "authenticated") {
         return NextResponse.json({ error: "Não autorizado." }, { status: 401 })
     }
